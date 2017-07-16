@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuService} from "../../services/menu-service/menu.service";
-import {MenuState} from "../../services/menu-service/menu-state.enum";
+import {MenuService} from '../../services/menu-service/menu.service';
+import {MenuState} from '../../services/menu-service/menu-state.enum';
 
 @Component({
   selector: 'footer-menu',

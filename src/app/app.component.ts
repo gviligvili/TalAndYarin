@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {ESPMarker} from './interfaces/ESPMarker.interface';
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +9,8 @@ import {FormBuilder} from "@angular/forms";
 })
 export class AppComponent {
   title = 'Espek';
-  lat: number = 32.073350;
-  lng: number = 34.785941;
+  lat = 32.073350;
+  lng = 34.785941;
 
   markers: ESPMarker[] = [
     {
