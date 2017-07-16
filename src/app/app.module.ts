@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {SharedModule} from './modules/shared/shared.modules';
+import {AgmCoreModule} from "@agm/core";
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import {SharedModule} from './modules/shared/shared.modules';
   ],
   imports: [
     BrowserModule,
-    SharedModule
+    SharedModule,
+    AgmCoreModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
