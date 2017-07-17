@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Target } from './target';
+import { Target } from './interfaces/target.interface';
 import { TARGETS } from './mock-targets';
 
 @Injectable()

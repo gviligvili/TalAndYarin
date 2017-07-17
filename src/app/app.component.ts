@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {TargetService} from './target.service';
+import {Target} from './interfaces/target.interface';
 
 @Component({
   selector: 'app-root',

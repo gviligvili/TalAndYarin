@@ -1,4 +1,4 @@
-import { Target } from './target';
+import { Target } from './interfaces/target.interface';
 
 export const TARGETS: Target[] = [
   { lat: 32.073350, lon: 34.785941 },

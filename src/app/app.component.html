@@ -6,8 +6,7 @@
          [zoomControl]="false"
          (mapClick)="mapClicked($event)">
 
-  <agm-marker
-    *ngFor="target of targets"
+  <agm-marker *ngFor="let target of targets"
     [latitude]="target.lat"
     [longitude]="target.lon">
   </agm-marker>
