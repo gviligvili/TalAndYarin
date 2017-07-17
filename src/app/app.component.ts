@@ -24,6 +24,10 @@ export class AppComponent implements OnInit {
     this.targets = this.targetService.getTargets();
   }
 
+  clickedMarker(label: string, index: number) {
+    console.log(`clicked the marker: ${label || index}`);
+  }
+
   mapClicked($event: MouseEvent) {
     console.log('lat: ', $event['coords'].lat, 'lon:', $event['coords'].lng);
   }
