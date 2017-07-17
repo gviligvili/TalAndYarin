@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {ESPMarker} from './interfaces/ESPMarker.interface';
-import {FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +10,14 @@ export class AppComponent {
   title = 'Espek';
   lat = 32.073350;
   lng = 34.785941;
+
+  constructor(){
+    setTimeout(() => {
+      $('#startup-spinner').fadeOut(600, () => {
+        $('#startup-spinner').remove();
+      })
+    },600)
+  }
 
   markers: ESPMarker[] = [
     {

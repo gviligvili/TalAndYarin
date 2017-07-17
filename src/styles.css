@@ -1,1 +1,209 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Loading spinner CSS, needs to be here because it's before compilation. */
+
+* {
+  box-sizing: border-box;
+}
+
+.loading-spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color:white;
+  transition: background-color .2s ease-out;
+  transition: opacity .2s ease-in-out;
+  pointer-events: none;
+  opacity: 1;
+  z-index: 999;
+}
+
+
+/* .loading screen is visible when app is not bootstraped yet, .my-app is empty */
+.loading-spinner-anim {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  perspective: 800px;
+  transform-style: preserve-3d;
+}
+
+.loading-spinner-anim .circle {
+  width: 100%;
+  height: 100%;
+  animation: spin 5s linear infinite;
+}
+
+.loading-spinner-anim .loading-spinner-border {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid #4abfe3;
+}
+
+.loading-spinner-anim .loading-spinner-out {
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  animation: spin 2s linear reverse infinite;
+}
+
+.loading-spinner-anim .loading-spinner-in {
+  top: 18%;
+  left: 18%;
+  width: 64%;
+  height: 64%;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  animation: spin 2s linear infinite;
+}
+
+.loading-spinner-anim .loading-spinner-mid {
+  top: 40%;
+  left: 40%;
+  width: 20%;
+  height: 20%;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+.loading .loading-spinner-anim {
+  transform: translateZ(0) rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(1);
+  opacity: 1;
+}
+
+.loading .loading-spinner-overlay {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.loading-spinner-dot {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #4abfe3;
+  animation: jitter 5s ease-in-out infinite, fade-in-out 5s linear infinite;
+}
+
+.loading-spinner-dot:nth-child(1) {
+  top: 90px;
+  left: 180px;
+  animation-delay: 0s;
+}
+
+.loading-spinner-dot:nth-child(2) {
+  top: 135px;
+  left: 168px;
+  animation-delay: 0.41667s;
+}
+
+.loading-spinner-dot:nth-child(3) {
+  top: 168px;
+  left: 135px;
+  animation-delay: 0.83333s;
+}
+
+.loading-spinner-dot:nth-child(4) {
+  top: 180px;
+  left: 90px;
+  animation-delay: 1.25s;
+}
+
+.loading-spinner-dot:nth-child(5) {
+  top: 168px;
+  left: 45px;
+  animation-delay: 1.66667s;
+}
+
+.loading-spinner-dot:nth-child(6) {
+  top: 135px;
+  left: 12px;
+  animation-delay: 2.08333s;
+}
+
+.loading-spinner-dot:nth-child(7) {
+  top: 90px;
+  left: 0px;
+  animation-delay: 2.5s;
+}
+
+.loading-spinner-dot:nth-child(8) {
+  top: 45px;
+  left: 12px;
+  animation-delay: 2.91667s;
+}
+
+.loading-spinner-dot:nth-child(9) {
+  top: 12px;
+  left: 45px;
+  animation-delay: 3.33333s;
+}
+
+.loading-spinner-dot:nth-child(10) {
+  top: 0px;
+  left: 90px;
+  animation-delay: 3.75s;
+}
+
+.loading-spinner-dot:nth-child(11) {
+  top: 12px;
+  left: 135px;
+  animation-delay: 4.16667s;
+}
+
+.loading-spinner-dot:nth-child(12) {
+  top: 45px;
+  left: 168px;
+  animation-delay: 4.58333s;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes jitter {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(0.7, 0.7);
+  }
+  50% {
+    transform: scale(1, 1);
+  }
+  75% {
+    transform: scale(1.3, 1.3);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0.8;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
