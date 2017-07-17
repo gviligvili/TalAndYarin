@@ -9,10 +9,10 @@ import {Target} from './interfaces/target.interface';
   providers: [TargetService]
 })
 export class AppComponent implements OnInit {
-  title = 'Espek';
   initialLat = 32.073350;
   initialLon = 34.785941;
   targets: Target[];
+  chosenMO = '1';
 
   constructor(private targetService: TargetService) {
     setTimeout(() => {
