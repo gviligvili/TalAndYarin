@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
-import {TargetService} from './target.service';
-import {Target} from './target';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -23,5 +20,9 @@ export class AppComponent implements OnInit {
 
   getTargets(): void {
     this.targets = this.targetService.getTargets();
+  }
+
+  mapClicked($event: MouseEvent) {
+    console.log('lat: ', $event['coords'].lat, 'lon:', $event['coords'].lng);
   }
 }
