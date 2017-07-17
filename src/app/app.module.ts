@@ -7,6 +7,7 @@ import {AgmCoreModule} from '@agm/core';
 import {FooterMenuComponent} from './components/footer-menu/footer-menu.component';
 import {MenuService} from './services/menu-service/menu.service';
 import {SideMenuComponent} from './components/side-menu/side-menu/side-menu.component';
+import {HttpModule} from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {SideMenuComponent} from './components/side-menu/side-menu/side-menu.comp
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     SharedModule,
     AgmCoreModule.forRoot()
   ],
