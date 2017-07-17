@@ -8,7 +8,8 @@
 
   <agm-marker *ngFor="let target of targets"
     [latitude]="target.lat"
-    [longitude]="target.lon">
+    [longitude]="target.lon"
+    [iconUrl]="target.FatherId==chosenMO ? 'assets/crosshair-marker.png' : null">
   </agm-marker>
 </agm-map>
 <side-menu></side-menu>
