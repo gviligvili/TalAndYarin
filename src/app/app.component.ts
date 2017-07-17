@@ -14,7 +14,13 @@ export class AppComponent implements OnInit {
   initialLon = 34.785941;
   targets: Target[];
 
-  constructor(private targetService: TargetService) {}
+  constructor(private targetService: TargetService) {
+    setTimeout(() => {
+      $('#startup-spinner').fadeOut(600, () => {
+        $('#startup-spinner').remove();
+      })
+    }, 600);
+  }
 
   ngOnInit(): void {
     this.getTargets();
