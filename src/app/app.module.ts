@@ -8,12 +8,14 @@ import {FooterMenuComponent} from './components/footer-menu/footer-menu.componen
 import {MenuService} from './services/menu-service/menu.service';
 import {SideMenuComponent} from './components/side-menu/side-menu/side-menu.component';
 import {HttpModule} from '@angular/http';
+import {ClusterListComponent} from './components/cluster-list/cluster-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterMenuComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    ClusterListComponent
   ],
   imports: [
     BrowserModule,

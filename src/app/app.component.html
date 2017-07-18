@@ -11,6 +11,13 @@
     [longitude]="target.lon"
     [iconUrl]="target.FatherId==chosenMO ? 'assets/crosshair-marker.png' : null">
   </agm-marker>
+
+  <!--<ng-container *ngFor="let target of targets">-->
+  <!--<agm-marker *ngIf="target.id===5"-->
+              <!--[latitude]="target.lat"-->
+              <!--[longitude]="target.lng">-->
+  <!--</agm-marker>-->
+  <!--</ng-container>-->
 </agm-map>
 <side-menu></side-menu>
 <footer-menu></footer-menu>

@@ -34,6 +34,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.agmMap.mapReady.subscribe(map => {
       const osmMapType = new google.maps.ImageMapType({
         getTileUrl: function (coord, zoom) {
+          console.log(coord, zoom);
           return "http://tile.openstreetmap.org/" +
             zoom + "/" + coord.x + "/" + coord.y + ".png";
         },
@@ -53,6 +54,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.targetService.getTargets().then((targets) => {
       this.targets = targets;
     });
+    // this.targets = this.targetService.TEST_TARGETS;
   }
 
   clickedMarker(label: string, index: number) {
