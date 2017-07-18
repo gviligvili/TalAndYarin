@@ -1,13 +1,17 @@
 <div class="cluster-item-container" (click)="toggleTargets()">
-  <div class="cluster-header">
+  <div class="cluster-header" >
     <div class="cluster-ammo">
       {{ cluster.ammo }}
     </div>
     <div class="cluster-name">
-      {{ cluster.name }}
+      <span class="name-text">{{ cluster.name }}</span>
+      <div class="ui checkbox">
+        <input type="checkbox" [checked]="!!this.chosenClusters[cluster.name]" (click)="stopCheckboxPropogation($event)"(change)="checkBoxToggle($event)">
+        <label></label>
+      </div>
     </div>
   </div>
-  <div class="target-list" *ngIf="showTargets">
+  <div class="target-list" *ngIf="showTargets" [@targetListDownFade]>
     <target-item *ngFor="let target of cluster.targets" [target]="target"></target-item>
   </div>
 </div>
