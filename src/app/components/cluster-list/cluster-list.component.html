@@ -1,5 +1,9 @@
 <div class="title-container">
-    צבירים
+  <div class="ui checkbox">
+    <input type="checkbox" [value]="" (click)="stopCheckboxPropogation($event)"(change)="showAllClusters($event)">
+    <label>הצג הכל</label>
+  </div>
+  <span>צבירים</span>
 </div>
 <perfect-scrollbar class="cluster-list-container">
   <cluster-item *ngFor="let cluster of clusters" [cluster]="cluster"></cluster-item>

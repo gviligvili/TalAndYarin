@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class ESPMarkerService {
 
   private availableColors = [1, 2, 3, 4, 5, 6, 7];
   private clutserColorMap = {};
-
+  private showUnchosenMarkers$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   /**
    * Assigns a color from the available colors
@@ -22,7 +23,7 @@ export class ESPMarkerService {
         this.clutserColorMap[clusterID] = color;
         resolve();
       } else {
-          console.error("You can't pick more then 7 clusters !");
+          console.error('You can\'t pick more then 7 clusters !');
           reject();
       }
     });
@@ -37,5 +38,13 @@ export class ESPMarkerService {
     const color = this.clutserColorMap[clusterID];
     this.availableColors.push(color);
     delete this.clutserColorMap[clusterID];
+  }
+
+  setShowUnchosenMarkers(flag: boolean) {
+    this.showUnchosenMarkers$.next(flag);
+  }
+
+  getShowUnchosenMarkers$(): BehaviorSubject<boolean> {
+    return this.showUnchosenMarkers$;
   }
 }

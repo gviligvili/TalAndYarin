@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {AgmCoreModule} from '@agm/core';
 import {HttpModule} from '@angular/http';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { PerfectScrollbarModule , PerfectScrollbarConfigInterface} from 'angular2-perfect-scrollbar';
 
 import { AppComponent } from './app.component';
@@ -13,7 +13,7 @@ import {SideMenuComponent} from './components/side-menu/side-menu/side-menu.comp
 import {ClusterListComponent} from './components/cluster-list/cluster-list.component';
 import {ClusterItemComponent} from './components/cluster-list/cluster-item/cluster-item.component';
 import {TargetItemComponent} from './components/cluster-list/target-item/target-item.component';
-import {ESPMarkerService} from "./services/espmarker-service/espmarker.service";
+import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 

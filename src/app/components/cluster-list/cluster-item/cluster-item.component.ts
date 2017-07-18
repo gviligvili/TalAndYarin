@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Cluster} from '../../../interfaces/cluster.interface';
 import {trigger, style, transition, animate} from '@angular/animations';
-import {ESPMarkerService} from "../../../services/espmarker-service/espmarker.service";
+import {ESPMarkerService} from '../../../services/espmarker-service/espmarker.service';
 
 @Component({
   selector: 'cluster-item',
@@ -36,7 +36,7 @@ export class ClusterItemComponent {
   @Input() cluster: Cluster;
   showTargets = false;
 
-  constructor(private espMarkerService: ESPMarkerService){}
+  constructor(private espMarkerService: ESPMarkerService) {}
 
   toggleTargets() {
     this.showTargets = !this.showTargets;

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Cluster} from '../../interfaces/cluster.interface';
-import {TargetService} from "../../services/targets-service/target.service";
+import {TargetService} from '../../services/targets-service/target.service';
+import {ESPMarkerService} from "../../services/espmarker-service/espmarker.service";
 
 @Component({
   selector: 'cluster-list',
@@ -9,11 +10,26 @@ import {TargetService} from "../../services/targets-service/target.service";
 })
 export class ClusterListComponent {
 
-  clusters: Cluster[] = _.range(80).map((x) => ({ name: x + 'צביר ' , ammo: 'ammo ' + x , targets: []}));
+  clusters: Cluster[];
+  showUnchosenMarkers: boolean;
 
-  constructor(private targetService: TargetService){
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService) {
+    this.espMarkerService.getShowUnchosenMarkers$().subscribe((flag) => {
+      this.showUnchosenMarkers = flag;
+    });
+
     this.targetService.getClusters$().subscribe((newClusters) => {
       this.clusters = newClusters;
     });
+  }
+
+  showAllClusters(e) {
+    const isChecked = e.target.checked;
+
+    this.espMarkerService.setShowUnchosenMarkers(isChecked);
+  }
+
+  stopCheckboxPropogation(e) {
+    e.stopPropagation();
   }
 }
