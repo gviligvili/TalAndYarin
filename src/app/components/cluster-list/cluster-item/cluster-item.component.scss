@@ -1,0 +1,39 @@
+.cluster-item-container {
+  width: 100%;
+  min-height: 40px;
+  margin: 10px 0px 10px 0px;
+  padding: 0px 15px 0px 15px;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+
+  .cluster-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .cluster-name {
+      flex: 1;
+      width: 100%;
+      font-size: 24px;
+      color: #46b7e4;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .cluster-ammo {
+      flex: 1;
+      width: 100%;
+      font-size: 20px;
+      color: #46b7e4;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+  }
+  .target-list {
+
+  }
+
+}
