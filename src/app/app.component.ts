@@ -10,7 +10,9 @@ import {AgmMap} from '@agm/core';
   providers: [TargetService]
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  title = 'Espek';
+
+  @ViewChild(AgmMap) agmMap;
+
   initialLat = 32.073350;
   initialLon = 34.785941;
   targets: Target[];
@@ -28,20 +30,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.getTargets();
   }
 
-  @ViewChild(AgmMap) agmMap;
   ngAfterViewInit(): void {
     // Change background layer
     this.agmMap.mapReady.subscribe(map => {
       const osmMapType = new google.maps.ImageMapType({
         getTileUrl: function (coord, zoom) {
           console.log(coord, zoom);
-          return "http://tile.openstreetmap.org/" +
-            zoom + "/" + coord.x + "/" + coord.y + ".png";
+          return 'http://tile.openstreetmap.org/' +
+            zoom + '/' + coord.x + '/' + coord.y + '.png';
         },
         tileSize: new google.maps.Size(256, 256),
         isPng: true,
-        alt: "OpenStreetMap",
-        name: "OSM",
+        alt: 'OpenStreetMap',
+        name: 'OSM',
         maxZoom: 19
       });
 
@@ -51,15 +52,19 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   getTargets(): void {
-    this.targetService.getTargets().then((targets) => {
-      this.targets = targets;
+    this.targetService.getTargets$().subscribe((targets) => {
+      if (!targets) {
+        this.targets = [];
+      } else {
+        this.targets = targets;
+      }
     });
     // this.targets = this.targetService.TEST_TARGETS;
   }
 
-  clickedMarker(FatherId: string) {
-    this.chosenMO = FatherId;
-    console.log(`clicked the marker: ${FatherId}`);
+  clickedMarker(father_id: string) {
+    this.chosenMO = father_id;
+    console.log(`clicked the marker: ${father_id}`);
   }
 
   mapClicked($event: MouseEvent) {

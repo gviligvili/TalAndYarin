@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {Cluster} from "../../interfaces/cluster.interface";
+import {Cluster} from '../../interfaces/cluster.interface';
+import {TargetService} from "../../services/targets-service/target.service";
 
 @Component({
   selector: 'cluster-list',
@@ -8,5 +9,11 @@ import {Cluster} from "../../interfaces/cluster.interface";
 })
 export class ClusterListComponent {
 
-  clusters: Cluster[] = _.range(80).map((x) => ({ name: x + "צביר " , ammo: "ammo " + x , targets: []}));
+  clusters: Cluster[] = _.range(80).map((x) => ({ name: x + 'צביר ' , ammo: 'ammo ' + x , targets: []}));
+
+  constructor(private targetService: TargetService){
+    this.targetService.getClusters$().subscribe((newClusters) => {
+      this.clusters = newClusters;
+    });
+  }
 }

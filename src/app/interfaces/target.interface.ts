@@ -1,6 +1,8 @@
 export interface Target {
   lat: number;
   lon: number;
-  FatherId: string;
-  name;
+  father_id: string;
+  ammo: string;
+  point: string;
+  tar_name: string;
 }

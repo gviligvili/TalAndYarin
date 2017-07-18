@@ -11,7 +11,7 @@ export class MenuService {
     const oldValue = this.menuState$.getValue();
 
     // If it's the same, turn the flag off.
-    if (oldValue == newState) {
+    if (oldValue === newState) {
       this.menuState$.next(null);
     } else {
       this.menuState$.next(newState);

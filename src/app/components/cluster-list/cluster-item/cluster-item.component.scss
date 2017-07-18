@@ -20,6 +20,14 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
+
+      .name-text {
+        margin-right: 8px;
+      }
+
+      .checkbox {
+        padding-top: 3px;
+      }
     }
 
     .cluster-ammo {
@@ -32,8 +40,4 @@
       justify-content: flex-start;
     }
   }
-  .target-list {
-
-  }
-
 }

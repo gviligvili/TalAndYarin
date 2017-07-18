@@ -9,8 +9,8 @@
   <agm-marker *ngFor="let target of targets"
               [latitude]="target.lat"
               [longitude]="target.lon"
-              [iconUrl]="target.FatherId==chosenMO ? 'assets/crosshair-marker.png' : null"
-              (markerClick)="clickedMarker(target.FatherId)"
+              [iconUrl]="target.father_id==chosenMO ? 'assets/crosshair-marker.png' : null"
+              (markerClick)="clickedMarker(target.father_id)"
   >
   </agm-marker>
 
