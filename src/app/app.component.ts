@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   initialLat = 32.073350;
   initialLon = 34.785941;
   targets: Target[];
-  chosenMO = '1';
+  chosenMO;
 
   constructor(private targetService: TargetService) {
     setTimeout(() => {
@@ -32,8 +32,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || index}`);
+  clickedMarker(FatherId: string) {
+    this.chosenMO = FatherId;
+    console.log(`clicked the marker: ${FatherId}`);
   }
 
   mapClicked($event: MouseEvent) {

@@ -7,9 +7,11 @@
          (mapClick)="mapClicked($event)">
 
   <agm-marker *ngFor="let target of targets"
-    [latitude]="target.lat"
-    [longitude]="target.lon"
-    [iconUrl]="target.FatherId==chosenMO ? 'assets/crosshair-marker.png' : null">
+              [latitude]="target.lat"
+              [longitude]="target.lon"
+              [iconUrl]="target.FatherId==chosenMO ? 'assets/crosshair-marker.png' : null"
+              (markerClick)="clickedMarker(target.FatherId)"
+  >
   </agm-marker>
 </agm-map>
 <side-menu></side-menu>
