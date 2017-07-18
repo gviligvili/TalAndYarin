@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ESPMarkerService {
 
   private availableColors = [1, 2, 3, 4, 5, 6, 7];
-  private clutserColorMap = {};
-  private showUnchosenMarkers$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private _clutserColorMap = {};
+  private showUnchosenMarkers$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private clusterColorMap$: BehaviorSubject<any> = new BehaviorSubject<any>(this._clutserColorMap);
 
   /**
    * Assigns a color from the available colors
@@ -16,17 +17,20 @@ export class ESPMarkerService {
    * @returns A promise, whether if the color assign was successful or not.
    */
   registerCluster(clusterID: string) {
-    return new Promise((resolve, reject) => {
+      // If the cluster already registered, don't do anything.
+      if (this._clutserColorMap[clusterID]) {
+        return;
+      }
+
       // if there is any color left, assign it to the cluster.
       if (this.availableColors[0]) {
-        const color =  this.availableColors.shift();
-        this.clutserColorMap[clusterID] = color;
-        resolve();
+        const color = this.availableColors.shift();
+        this._clutserColorMap[clusterID] = color;
+        this.clusterColorMap$.next(this._clutserColorMap);
       } else {
-          console.error('You can\'t pick more then 7 clusters !');
-          reject();
+        alert('אי אפשר לבחור יותר משבעה צבירים');
+        console.error('You can\'t pick more then 7 clusters !');
       }
-    });
   }
 
   /**
@@ -35,9 +39,14 @@ export class ESPMarkerService {
    * @param clusterID
    */
   unregisterCluster(clusterID: string) {
-    const color = this.clutserColorMap[clusterID];
-    this.availableColors.push(color);
-    delete this.clutserColorMap[clusterID];
+    const color = this._clutserColorMap[clusterID];
+    this.availableColors.unshift(color);
+    delete this._clutserColorMap[clusterID];
+    this.clusterColorMap$.next(this._clutserColorMap);
+  }
+
+  getClutserColorMap$() {
+    return this.clusterColorMap$;
   }
 
   setShowUnchosenMarkers(flag: boolean) {

@@ -14,8 +14,8 @@ export class TargetService {
     this.fetchTargets();
   }
 
-  targets$: BehaviorSubject<Target[]> = new BehaviorSubject<Target[]>(null);
-  clusters$: BehaviorSubject<Cluster[]> = new BehaviorSubject<Cluster[]>(null);
+  targets$: BehaviorSubject<Target[]> = new BehaviorSubject<Target[]>([]);
+  clusters$: BehaviorSubject<Cluster[]> = new BehaviorSubject<Cluster[]>([]);
 
   TEST_TARGETS = [
     {'lat': 56.0313, 'lng': 14.1524, 'id': 1},

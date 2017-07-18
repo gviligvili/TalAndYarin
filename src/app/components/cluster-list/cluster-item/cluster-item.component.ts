@@ -35,8 +35,11 @@ export class ClusterItemComponent {
 
   @Input() cluster: Cluster;
   showTargets = false;
+  chosenClusters;
 
-  constructor(private espMarkerService: ESPMarkerService) {}
+  constructor(private espMarkerService: ESPMarkerService) {
+    this.chosenClusters = espMarkerService.getClutserColorMap$().getValue();
+  }
 
   toggleTargets() {
     this.showTargets = !this.showTargets;
@@ -47,9 +50,7 @@ export class ClusterItemComponent {
 
     if (isChecked) {
       // register for marker with father cluster name
-      this.espMarkerService.registerCluster(this.cluster.name).then(() => {}, () => {
-        e.target.checked = false;
-      });
+      this.espMarkerService.registerCluster(this.cluster.name);
     } else {
       this.espMarkerService.unregisterCluster(this.cluster.name);
     }

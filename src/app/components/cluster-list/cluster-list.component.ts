@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Cluster} from '../../interfaces/cluster.interface';
 import {TargetService} from '../../services/targets-service/target.service';
-import {ESPMarkerService} from "../../services/espmarker-service/espmarker.service";
+import {ESPMarkerService} from '../../services/espmarker-service/espmarker.service';
 
 @Component({
   selector: 'cluster-list',

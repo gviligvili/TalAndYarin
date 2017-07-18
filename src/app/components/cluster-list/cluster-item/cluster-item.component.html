@@ -6,7 +6,7 @@
     <div class="cluster-name">
       <span class="name-text">{{ cluster.name }}</span>
       <div class="ui checkbox">
-        <input type="checkbox" (click)="stopCheckboxPropogation($event)"(change)="checkBoxToggle($event)">
+        <input type="checkbox" [checked]="!!this.chosenClusters[cluster.name]" (click)="stopCheckboxPropogation($event)"(change)="checkBoxToggle($event)">
         <label></label>
       </div>
     </div>

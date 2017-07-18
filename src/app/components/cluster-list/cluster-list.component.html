@@ -1,6 +1,6 @@
 <div class="title-container">
   <div class="ui checkbox">
-    <input type="checkbox" [value]="" (click)="stopCheckboxPropogation($event)"(change)="showAllClusters($event)">
+    <input type="checkbox" [checked]="showUnchosenMarkers" (click)="stopCheckboxPropogation($event)"(change)="showAllClusters($event)">
     <label>הצג הכל</label>
   </div>
   <span>צבירים</span>
