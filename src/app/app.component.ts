@@ -4,6 +4,7 @@ import {Target} from './interfaces/target.interface';
 import {AgmMap} from '@agm/core';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
 import {Observable} from 'rxjs/Observable';
+import {ESPMapService} from "./services/espmap-service/espmap.service";
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   clusterColorMap;
   filterTargetsSub;
 
-  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService) {
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService:ESPMapService) {
     setTimeout(() => {
       $('#startup-spinner').fadeOut(600, () => {
         $('#startup-spinner').remove();
@@ -38,6 +39,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     // Change background layer
     this.agmMap.mapReady.subscribe(map => {
+      this.espMapService.registerMaps(map, this.agmMap);
       const osmMapType = new google.maps.ImageMapType({
         getTileUrl: function (coord, zoom) {
           console.log(coord, zoom);

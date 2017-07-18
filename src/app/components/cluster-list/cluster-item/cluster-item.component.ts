@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {Cluster} from '../../../interfaces/cluster.interface';
 import {trigger, style, transition, animate} from '@angular/animations';
 import {ESPMarkerService} from '../../../services/espmarker-service/espmarker.service';
+import {ESPMapService} from "../../../services/espmap-service/espmap.service";
 
 @Component({
   selector: 'cluster-item',
@@ -37,12 +38,19 @@ export class ClusterItemComponent {
   showTargets = false;
   chosenClusters;
 
-  constructor(private espMarkerService: ESPMarkerService) {
+  constructor(private espMarkerService: ESPMarkerService, private espMapService:ESPMapService) {
     this.chosenClusters = espMarkerService.getClutserColorMap$().getValue();
   }
 
   toggleTargets() {
     this.showTargets = !this.showTargets;
+  }
+
+  goToCluster(e) {
+    this.stopClickPropogation(e)
+    const centroid = this.espMapService.calculateCentroid(this.cluster.targets);
+    this.espMapService.setCenter(centroid.lat, centroid.lon);
+    this.espMapService.setZoom(13);
   }
 
   checkBoxToggle(e) {
@@ -51,12 +59,13 @@ export class ClusterItemComponent {
     if (isChecked) {
       // register for marker with father cluster name
       this.espMarkerService.registerCluster(this.cluster.name);
+      e.target.checked = !!this.chosenClusters[this.cluster.name];
     } else {
       this.espMarkerService.unregisterCluster(this.cluster.name);
     }
   }
 
-  stopCheckboxPropogation(e) {
+  stopClickPropogation(e) {
     e.stopPropagation();
   }
 }
