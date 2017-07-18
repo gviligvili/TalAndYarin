@@ -4,11 +4,16 @@ import {Target} from '../../interfaces/target.interface';
 import {Http, Response} from '@angular/http';
 import {environment} from '../../../environments/environment';
 import {HttpErrorResponse} from '@angular/common/http';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Cluster} from "../../interfaces/cluster.interface";
 
 @Injectable()
 export class TargetService {
 
   constructor(private http: Http) {}
+
+  targets$: BehaviorSubject<Target[]> = new BehaviorSubject<Target[]>(null);
+  clusters$: BehaviorSubject<Cluster[]> = new BehaviorSubject<Cluster[]>(null);
 
   TEST_TARGETS = [
     {"lat":56.0313,"lng":14.1524,"id":1},

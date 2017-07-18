@@ -1,4 +1,6 @@
 <div class="title-container">
     צבירים
 </div>
-<div class=""></div>
+<perfect-scrollbar class="cluster-list-container">
+  <cluster-item *ngFor="let cluster of clusters" [cluster]="cluster"></cluster-item>
+</perfect-scrollbar>

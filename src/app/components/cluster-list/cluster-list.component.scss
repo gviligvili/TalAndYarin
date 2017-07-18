@@ -1,8 +1,9 @@
 :host {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-
 
 .title-container {
   font-size: 38px;
@@ -12,4 +13,10 @@
   align-items: center;
   justify-content: flex-end;
   color: rgb(70, 183, 228);
+}
+
+.cluster-list-container {
+  height: 80%;
+  width: 85%;
+  align-self: center;
 }
