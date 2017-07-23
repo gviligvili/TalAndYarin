@@ -27,10 +27,6 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
-    "moment": "^2.18.1",
-    "mydatepicker": "^2.0.26",
-    "ng2-nouislider": "^1.6.1",
-    "nouislider": "^10.0.0",
     "rxjs": "^5.1.0",
     "semantic-ui-css": "^2.2.11",
     "zone.js": "^0.8.4"
