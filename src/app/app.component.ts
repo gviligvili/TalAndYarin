@@ -1,7 +1,6 @@
 import {Component, OnInit, AfterViewInit, ViewChild, OnDestroy} from '@angular/core';
 import {TargetService} from './services/targets-service/target.service';
 import {Target} from './interfaces/target.interface';
-import {AgmMap} from '@agm/core';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
 import {Observable} from 'rxjs/Observable';
 import {ESPMapService} from "./services/espmap-service/espmap.service";
@@ -13,9 +12,6 @@ import {ESPMapService} from "./services/espmap-service/espmap.service";
   providers: [TargetService]
 })
 export class AppComponent implements OnDestroy, AfterViewInit {
-
-  @ViewChild(AgmMap) agmMap;
-
   initialLat = 32.073350;
   initialLon = 34.785941;
   filteredTargets: Target[];
@@ -23,7 +19,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   clusterColorMap;
   filterTargetsSub;
 
-  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService:ESPMapService) {
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService) {
     setTimeout(() => {
       $('#startup-spinner').fadeOut(600, () => {
         $('#startup-spinner').remove();
@@ -37,25 +33,7 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Change background layer
-    this.agmMap.mapReady.subscribe(map => {
-      this.espMapService.registerMaps(map, this.agmMap);
-      const osmMapType = new google.maps.ImageMapType({
-        getTileUrl: function (coord, zoom) {
-          console.log(coord, zoom);
-          return 'http://tile.openstreetmap.org/' +
-            zoom + '/' + coord.x + '/' + coord.y + '.png';
-        },
-        tileSize: new google.maps.Size(256, 256),
-        isPng: true,
-        alt: 'OpenStreetMap',
-        name: 'OSM',
-        maxZoom: 19
-      });
 
-      map.mapTypes.set('OSM', osmMapType);
-      map.setMapTypeId('OSM');
-    });
   }
 
 

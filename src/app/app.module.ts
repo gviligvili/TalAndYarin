@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {AgmCoreModule} from '@agm/core';
 import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { PerfectScrollbarModule , PerfectScrollbarConfigInterface} from 'angular2-perfect-scrollbar';
@@ -33,7 +32,6 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     HttpModule,
     BrowserAnimationsModule,
     SharedModule,
-    AgmCoreModule.forRoot(),
     PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
   ],
   providers: [

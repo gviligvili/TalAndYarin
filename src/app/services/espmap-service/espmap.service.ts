@@ -7,23 +7,12 @@ interface Point {
 @Injectable()
 export class ESPMapService {
 
-  private nativeMap;
-  private agmMap;
-
-  constructor() {
-  }
-
-  registerMaps(nativeMap, agmMap) {
-    this.nativeMap = nativeMap;
-    this.agmMap = agmMap;
-  }
-
   setCenter(lat: number, lon: number) {
-    this.nativeMap.setCenter({'lat': lat, 'lng': lon});
+    //TODO
   }
 
   setZoom(zoomLevel: number) {
-    this.nativeMap.setZoom(zoomLevel);
+    //TODO
   }
 
   /**
