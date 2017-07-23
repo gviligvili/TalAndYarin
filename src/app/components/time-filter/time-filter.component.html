@@ -4,6 +4,6 @@
                     (dateChanged)="onDateChanged($event)" [(ngModel)]="datePickerDate"></my-date-picker>
   </div>
   <div class="time-filter-slider">
-    <nouislider [min]="rangeArr[0]" [max]="rangeArr[1]"  [config]="rangeConfig" [(ngModel)]="currRange"></nouislider>
+    <nouislider [config]="rangeConfig" [(ngModel)]="currRange"></nouislider>
   </div>
 </div>
