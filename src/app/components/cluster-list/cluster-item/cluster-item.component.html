@@ -1,12 +1,15 @@
 <div class="cluster-item-container" (click)="toggleTargets()">
   <div class="cluster-header" >
+    <div class="goto-icon-container">
+      <i class="fa fa-arrow-circle-left" (click)="goToCluster($event)" aria-hidden="true"></i>
+    </div>
     <div class="cluster-ammo">
       {{ cluster.ammo }}
     </div>
     <div class="cluster-name">
       <span class="name-text">{{ cluster.name }}</span>
       <div class="ui checkbox">
-        <input type="checkbox" [checked]="!!this.chosenClusters[cluster.name]" (click)="stopCheckboxPropogation($event)"(change)="checkBoxToggle($event)">
+        <input type="checkbox" [checked]="!!this.chosenClusters[cluster.name]" (click)="stopClickPropogation($event)"(change)="checkBoxToggle($event)">
         <label></label>
       </div>
     </div>

@@ -14,6 +14,7 @@ import {ClusterListComponent} from './components/cluster-list/cluster-list.compo
 import {ClusterItemComponent} from './components/cluster-list/cluster-item/cluster-item.component';
 import {TargetItemComponent} from './components/cluster-list/target-item/target-item.component';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
+import { ESPMapService} from "./services/espmap-service/espmap.service";
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 
@@ -37,7 +38,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
   ],
   providers: [
     MenuService,
-    ESPMarkerService
+    ESPMarkerService,
+    ESPMapService
   ],
   bootstrap: [AppComponent]
 })
