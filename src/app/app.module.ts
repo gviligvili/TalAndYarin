@@ -9,11 +9,14 @@ import { AppComponent } from './app.component';
 import {SharedModule} from './modules/shared/shared.modules';
 import {FooterMenuComponent} from './components/footer-menu/footer-menu.component';
 import {MenuService} from './services/menu-service/menu.service';
-import {SideMenuComponent} from './components/side-menu/side-menu/side-menu.component';
 import {ClusterListComponent} from './components/cluster-list/cluster-list.component';
 import {ClusterItemComponent} from './components/cluster-list/cluster-item/cluster-item.component';
 import {TargetItemComponent} from './components/cluster-list/target-item/target-item.component';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
+import {SideMenuComponent} from './components/side-menu/side-menu.component';
+import {TimeFilterComponent} from './components/time-filter/time-filter.component';
+import {NouisliderModule} from 'ng2-nouislider';
+import {MyDatePickerModule} from 'mydatepicker';
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 
@@ -25,7 +28,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     SideMenuComponent,
     ClusterListComponent,
     ClusterItemComponent,
-    TargetItemComponent
+    TargetItemComponent,
+    TimeFilterComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +38,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     SharedModule,
     AgmCoreModule.forRoot(),
     PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
+    NouisliderModule,
+    MyDatePickerModule
   ],
   providers: [
     MenuService,

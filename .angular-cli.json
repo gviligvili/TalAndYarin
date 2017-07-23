@@ -21,7 +21,8 @@
       "styles": [
         "styles.css",
         "../node_modules/semantic-ui-css/semantic.css",
-        "../node_modules/font-awesome/css/font-awesome.css"
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/nouislider/distribute/nouislider.min.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",

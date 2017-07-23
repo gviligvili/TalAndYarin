@@ -6,7 +6,7 @@ import {environment} from '../../../environments/environment';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Cluster} from '../../interfaces/cluster.interface';
-import * as moment from "moment";
+import * as moment from 'moment';
 
 @Injectable()
 export class TargetService {
@@ -1035,11 +1035,11 @@ export class TargetService {
 
         const clusters = this.processTargetsToClusters(data);
 
-        let a = moment().startOf('day').add(1, 'hours');
+        const a = moment().startOf('day').add(1, 'hours');
         clusters.forEach((c) => {
           c.time = a.valueOf();
           a.add(1, 'hours');
-        })
+        });
 
         console.warn('Recieved Targets :', data);
         console.warn('Clusters made :', clusters);

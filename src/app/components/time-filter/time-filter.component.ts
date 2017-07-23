@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import * as moment from 'moment';
-import {NouiFormatter} from "ng2-nouislider";
+import {NouiFormatter} from 'ng2-nouislider';
 
 export class TimeFormatter implements NouiFormatter {
   to(value: number): string {
-    console.log("1) To : ", value);
+    console.log('1) To : ', value);
     const h = Math.floor(value / 3600000);
-    const m = Math.floor(value % 3600000 / 60);
+    const m = Math.floor(value % 3600000 / 60000);
     const values = [h, m];
-    let timeString: string = '';
+    let timeString = '';
     let i = 0;
-    for (let v of values) {
+    for (const v of values) {
       if (values[i] < 10) {
         timeString += '0';
       }
@@ -22,17 +22,17 @@ export class TimeFormatter implements NouiFormatter {
       }
       i++;
     }
-    console.log("2) To : ", timeString);
+    console.log('2) To : ', timeString);
     return timeString;
-  };
+  }
 
   from(value: string): number {
-    console.log("1) From : ", value);
-    let v = value.split(':').map(parseInt);
-    let time: number = 0;
+    console.log('1) From : ', value);
+    const v = value.split(':').map(parseInt);
+    let time = 0;
     time += v[0] * 3600000;
-    time += v[1] * 60;
-    console.log("2) From : ", time);
+    time += v[1] * 60000;
+    console.log('2) From : ', time);
     return time;
   }
 }
@@ -93,7 +93,7 @@ export class TimeFilterComponent {
   }
 
   updateSlider() {
-    console.log([this.selectedDate.getTime(), moment(this.selectedDate).add(1, 'day').valueOf()])
+    console.log([this.selectedDate.getTime(), moment(this.selectedDate).add(1, 'day').valueOf()]);
     // this.rangeArr = [this.selectedDate.getTime(), moment(this.selectedDate).add(1, 'day').valueOf()];
     this.currRange = [1, 200];
   }
