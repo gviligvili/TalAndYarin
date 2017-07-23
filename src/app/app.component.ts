@@ -18,6 +18,8 @@ export class AppComponent implements OnDestroy, AfterViewInit {
 
   clusterColorMap;
   filterTargetsSub;
+  mymap;
+  markersLayer = new L.FeatureGroup();
 
   constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService) {
     setTimeout(() => {
@@ -33,15 +35,17 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    this.mymap = L.map('mapid').setView([this.initialLat, this.initialLon], 13);
 
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(mymap);
+    }).addTo(this.mymap);
+
+    this.mymap.addLayer(this.markersLayer);
   }
 
 
-  getMarkerIcon(father_id: string) {
+  getMarkerIcon(father_id: string): string {
     let path = 'assets/marker-icon-';
     if (this.clusterColorMap[father_id]) {
       path += this.clusterColorMap[father_id] + '.svg';
@@ -66,6 +70,21 @@ export class AppComponent implements OnDestroy, AfterViewInit {
         return clusterColorMap[tar.father_id] !== undefined;
       });
     }
+
+    this.updateMarkers(this.filteredTargets);
+  }
+
+  updateMarkers(targets: Target[]) {
+    // This is a total recreation. Remove all previous markers first.
+    this.markersLayer.clearLayers();
+
+    // Create a marker for each target and add it to the markers layer.
+    targets.forEach(
+      target => this.markersLayer.addLayer(
+                L.marker([target.lat, target.lon])
+                 .setIcon(L.icon({ iconUrl: this.getMarkerIcon(target.father_id) }))
+                 .on('click', () => this.markerClicked(target.father_id)))
+    );
   }
 
   markerClicked(father_id: string) {
