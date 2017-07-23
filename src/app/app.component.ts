@@ -11,7 +11,7 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./app.component.css'],
   providers: [TargetService]
 })
-export class AppComponent implements OnDestroy, AfterViewInit {
+export class AppComponent implements AfterViewInit {
 
   @ViewChild(AgmMap) agmMap;
 
@@ -20,7 +20,6 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   filteredTargets: Target[];
 
   clusterColorMap;
-  filterTargetsSub;
 
   constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService) {
     setTimeout(() => {
@@ -29,10 +28,11 @@ export class AppComponent implements OnDestroy, AfterViewInit {
       });
     }, 600);
 
+    this.targetService.getFilteredTargets$().subscribe((targets) => {
+      this.filteredTargets = targets;
+    });
+
     this.clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
-    this.filterTargetsSub = this.espMarkerService.getClutserColorMap$().asObservable()
-      .merge(this.espMarkerService.getShowUnchosenMarkers$().asObservable(), this.targetService.getTargets$().asObservable())
-      .subscribe(this.filterAllTargets.bind(this));
   }
 
   ngAfterViewInit(): void {
@@ -40,7 +40,6 @@ export class AppComponent implements OnDestroy, AfterViewInit {
     this.agmMap.mapReady.subscribe(map => {
       const osmMapType = new google.maps.ImageMapType({
         getTileUrl: function (coord, zoom) {
-          console.log(coord, zoom);
           return 'http://tile.openstreetmap.org/' +
             zoom + '/' + coord.x + '/' + coord.y + '.png';
         },
@@ -68,22 +67,6 @@ export class AppComponent implements OnDestroy, AfterViewInit {
     return path;
   }
 
-
-  filterAllTargets() {
-    const allTargets = this.targetService.getTargets$().getValue();
-    const clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
-    const isShowUnchosenMarkers = this.espMarkerService.getShowUnchosenMarkers$().getValue();
-
-    // If show all, no filter needed.
-    if (isShowUnchosenMarkers) {
-      this.filteredTargets = allTargets;
-    } else {
-      this.filteredTargets = allTargets.filter((tar) => {
-        return clusterColorMap[tar.father_id] !== undefined;
-      });
-    }
-  }
-
   markerClicked(father_id: string) {
     const clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
 
@@ -98,9 +81,5 @@ export class AppComponent implements OnDestroy, AfterViewInit {
 
   mapClicked($event: MouseEvent) {
     console.log('lat: ', $event['coords'].lat, 'lon:', $event['coords'].lng);
-  }
-
-  ngOnDestroy() {
-    this.filterTargetsSub.unsubscribe();
   }
 }

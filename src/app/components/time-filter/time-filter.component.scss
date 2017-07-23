@@ -1,24 +1,33 @@
 #time-filter-container {
-  background-color: #ff8d8d;
+  padding-top: 10px;
   height: 120px;
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
 
   .time-filter-slider {
-    flex: 1;
-    padding: 0px 15px 0px 30px;
+    width: 95%;
+    min-width: 1354px;
     display: block;
-    width: 100%;
-    background-color: blue;
+    position: relative;
   }
 
-  .date-picker-container {
-    display: block;
-    width: 100%;
-    width: 250px;
-    padding: 0px 30px 0px 30px;
-    background-color: greenyellow;
+  .upper-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .date-picker-container {
+      display: block;
+      width: 100%;
+      width: 250px;
+      padding: 0px 30px 0px 30px;
+    }
+
+    .filter-by-time-container {
+      padding-bottom: 7px;
+    }
   }
 }

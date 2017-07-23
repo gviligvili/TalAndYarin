@@ -19,6 +19,7 @@
  */
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/map';
 
 /** IE9, IE10 and IE11 requires all of the following polyfills. **/
 // import 'core-js/es6/symbol';

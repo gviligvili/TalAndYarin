@@ -1,41 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import * as moment from 'moment';
-import {NouiFormatter} from 'ng2-nouislider';
+import {TimeFormatter} from "./TimeFormatter";
+import {TargetService} from "../../services/targets-service/target.service";
 
-export class TimeFormatter implements NouiFormatter {
-  to(value: number): string {
-    console.log('1) To : ', value);
-    const h = Math.floor(value / 3600000);
-    const m = Math.floor(value % 3600000 / 60000);
-    const values = [h, m];
-    let timeString = '';
-    let i = 0;
-    for (const v of values) {
-      if (values[i] < 10) {
-        timeString += '0';
-      }
-
-      timeString += values[i].toFixed(0);
-      if (i < 1) {
-        timeString += ':';
-      }
-      i++;
-    }
-    console.log('2) To : ', timeString);
-    return timeString;
-  }
-
-  from(value: string): number {
-    console.log('1) From : ', value);
-    const v = value.split(':').map(parseInt);
-    let time = 0;
-    time += v[0] * 3600000;
-    time += v[1] * 60000;
-    console.log('2) From : ', time);
-    return time;
-  }
-}
 
 @Component({
   selector: 'time-filter',
@@ -63,6 +31,10 @@ export class TimeFilterComponent {
 
   private rangeArr: number[];
   private currRange: number[];
+  private selectedDate: Date = moment().startOf('day').toDate();
+  private datePickerDate: any;
+  private isFilterByTimeOn: boolean;
+
   private myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
@@ -70,10 +42,10 @@ export class TimeFilterComponent {
     showIncreaseDateBtn: true,
   };
 
-  private selectedDate: Date = moment().startOf('day').toDate();
-  private datePickerDate: any;
 
-  constructor() {
+
+  constructor(private targetsService:TargetService) {
+    this.targetsService.getIsFilterByTimeOn$().subscribe((flag) => this.isFilterByTimeOn = flag);
 
     this.datePickerDate = {
       date: {
@@ -83,18 +55,32 @@ export class TimeFilterComponent {
       }
     };
 
-    this.updateSlider();
+
+    this.resetSliderRange();
   }
 
   onDateChanged(event: IMyDateModel) {
     // Update value of selDate variable
     this.selectedDate = event.jsdate;
-    this.updateSlider();
+    this.resetSliderRange();
   }
 
-  updateSlider() {
-    console.log([this.selectedDate.getTime(), moment(this.selectedDate).add(1, 'day').valueOf()]);
-    // this.rangeArr = [this.selectedDate.getTime(), moment(this.selectedDate).add(1, 'day').valueOf()];
-    this.currRange = [1, 200];
+  resetSliderRange() {
+    this.currRange = [0, 86400000];
+  }
+
+  sliderChanged(dateArr) {
+    const currDay = this.selectedDate.getTime();
+    const startDate = currDay + dateArr[0];
+    const endDate = currDay + dateArr[1];
+    this.targetsService.setFilterDates(startDate, endDate)
+  }
+
+  toggleFilterByTime() {
+    this.targetsService.toggleFilterByTime();
+  }
+
+  stopCheckboxPropogation(e) {
+    e.stopPropagation();
   }
 }
