@@ -22,7 +22,9 @@ export class ESPMapService {
     const northWest = L.latLng(Math.max(...lats), Math.max(...lngs));
 
     // Padding to counter side and footer menus
-    this.map.flyToBounds(L.latLngBounds(southEast, northWest), { paddingBottomRight: [400, 60] });
+    this.map.flyToBounds(L.latLngBounds(southEast, northWest), { paddingBottomRight: [400, 60],
+                                                                 duration: 1,
+                                                                 maxZoom: 15 });
   }
 
   /**
