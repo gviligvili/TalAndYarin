@@ -48,9 +48,7 @@ export class ClusterItemComponent {
 
   goToCluster(e) {
     this.stopClickPropogation(e);
-    const centroid = this.espMapService.calculateCentroid(this.cluster.targets);
-    this.espMapService.setCenter(centroid.lat, centroid.lon);
-    this.espMapService.setZoom(13);
+    this.espMapService.flyToCluster(this.cluster.targets);
   }
 
   checkBoxToggle(e) {

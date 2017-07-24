@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import Map = L.Map;
 
 interface Point {
   lat: number; lon: number;
@@ -7,12 +8,21 @@ interface Point {
 @Injectable()
 export class ESPMapService {
 
-  setCenter(lat: number, lon: number) {
-    //TODO
+  private map: Map;
+
+  registerMap(map: Map) {
+    this.map = map;
   }
 
-  setZoom(zoomLevel: number) {
-    //TODO
+  flyToCluster(points: Point[]) {
+    const lats = points.map(point => point.lat);
+    const lngs = points.map(point => point.lon);
+
+    const southEast = L.latLng(Math.min(...lats), Math.min(...lngs));
+    const northWest = L.latLng(Math.max(...lats), Math.max(...lngs));
+
+    // Padding to counter side and footer menus
+    this.map.flyToBounds(L.latLngBounds(southEast, northWest), { paddingBottomRight: [400, 60] });
   }
 
   /**

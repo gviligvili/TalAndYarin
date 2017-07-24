@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit {
   assistantmap;
   markersLayer = new L.FeatureGroup();
 
-  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService) {
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService) {
     setTimeout(() => {
       $('#startup-spinner').fadeOut(600, () => {
         $('#startup-spinner').remove();
@@ -49,6 +49,8 @@ export class AppComponent implements AfterViewInit {
 
     this.mymap.addLayer(this.markersLayer);
     this.assistantmap.addLayer(this.markersLayer);
+
+    this.espMapService.registerMap(this.mymap);
   }
 
 
