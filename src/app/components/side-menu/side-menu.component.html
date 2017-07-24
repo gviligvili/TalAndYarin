@@ -1,4 +1,4 @@
-<div id="side-menu" [ngClass]="{'show-side-menu': currMenuState}" [ngSwitch]="currMenuState">
+<div id="side-menu" [ngClass]="{'show-side-menu': showMenu}" [ngSwitch]="currMenuState">
     <cluster-list *ngSwitchCase="menuStateEnum.CLUSTER_LIST"></cluster-list>
     <div *ngSwitchCase="menuStateEnum.ESP_FORM">{{menuStateEnum[menuStateEnum.ESP_FORM]}}</div>
     <div *ngSwitchDefault >There is no element : {{menuStateEnum[currMenuState]}}</div>

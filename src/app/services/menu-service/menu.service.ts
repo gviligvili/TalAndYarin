@@ -18,7 +18,7 @@ export class MenuService {
     }
   }
 
-  getMenuState(): BehaviorSubject<MenuState> {
+  getMenuState$(): BehaviorSubject<MenuState> {
     return this.menuState$;
   }
 }
