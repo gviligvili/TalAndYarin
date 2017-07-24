@@ -40,6 +40,9 @@ export class AppComponent implements OnDestroy, AfterViewInit {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.mymap);
 
+    // Add measure control with imperial units (miles)
+    L.control.polylineMeasure({ imperial: true }).addTo(this.mymap);
+
     this.espMapService.registerMap(this.mymap);
 
     this.mymap.addLayer(this.markersLayer);
