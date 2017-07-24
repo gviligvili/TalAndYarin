@@ -39,22 +39,8 @@ export class AppComponent implements AfterViewInit {
     this.mymap = L.map('mapid').setView([this.initialLat, this.initialLon], 13);
     this.assistantmap = L.map('assistantmap').setView([this.initialLat, this.initialLon], 13);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.mymap);
-
-    // Add measure control with imperial units (miles)
-    L.control.polylineMeasure({ imperial: true }).addTo(this.mymap);
-
-    this.espMapService.registerMap(this.mymap);
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.assistantmap);
-
-    this.mymap.addLayer(this.markersLayer);
-    this.assistantmap.addLayer(this.markersLayer);
-
-    this.espMapService.registerMap(this.mymap);
+    this.espMapService.registerMaps(this.mymap, this.assistantmap);
+    this.espMapService.addLayer(this.markersLayer);
   }
 
 

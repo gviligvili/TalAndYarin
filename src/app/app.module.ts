@@ -29,7 +29,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     ClusterListComponent,
     ClusterItemComponent,
     TargetItemComponent,
-    TimeFilterComponent
+    TimeFilterComponent,
   ],
   imports: [
     BrowserModule,

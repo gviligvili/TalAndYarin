@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import Map = L.Map;
+import Layer = L.Layer;
+import * as cloneLayer from 'leaflet-clonelayer';
 
 interface Point {
   lat: number; lon: number;
@@ -9,9 +11,36 @@ interface Point {
 export class ESPMapService {
 
   private map: Map;
+  private assistantMap: Map;
+  private markerLayer;
 
-  registerMap(map: Map) {
-    this.map = map;
+  registerMaps(mainMap: Map, assistantMap: Map) {
+    this.map = mainMap;
+    this.assistantMap = assistantMap;
+    this.mapsInit(this.map, this.assistantMap);
+  }
+
+  /**
+   * Init the maps, YOU NEED map and assistant map already initialized !
+   */
+  mapsInit(mMap, aMap) {
+    const tilesLayers = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    this.addLayer(tilesLayers);
+
+    // Add measure control with imperial units (miles)
+    const mMeasureTool = L.control.polylineMeasure({ imperial: true }).addTo(mMap);
+    const aMeasureTool = L.control.polylineMeasure({ imperial: true }).addTo(aMap);
+  }
+
+  addLayer(newLayer: Layer) {
+    const cloned = cloneLayer(newLayer);
+    const mLayer = this.map.addLayer(newLayer);
+    const aLayer = this.assistantMap.addLayer(cloned);
+
+    return { mainLayer: mLayer, assistantLayer: aLayer };
   }
 
   flyToCluster(points: Point[]) {
