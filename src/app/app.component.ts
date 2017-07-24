@@ -1,8 +1,7 @@
-import {Component, OnInit, AfterViewInit, ViewChild, OnDestroy} from '@angular/core';
+import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 import {TargetService} from './services/targets-service/target.service';
 import {Target} from './interfaces/target.interface';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
-import {Observable} from 'rxjs/Observable';
 import {ESPMapService} from './services/espmap-service/espmap.service';
 
 @Component({
@@ -40,6 +39,8 @@ export class AppComponent implements OnDestroy, AfterViewInit {
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.mymap);
+
+    this.espMapService.registerMap(this.mymap);
 
     this.mymap.addLayer(this.markersLayer);
   }
