@@ -7,7 +7,7 @@ import {ESPMapService} from './services/espmap-service/espmap.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   providers: [TargetService]
 })
 export class AppComponent implements AfterViewInit {
@@ -17,6 +17,7 @@ export class AppComponent implements AfterViewInit {
 
   clusterColorMap;
   mymap;
+  assistantmap;
   markersLayer = new L.FeatureGroup();
 
   constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService) {
@@ -36,12 +37,18 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.mymap = L.map('mapid').setView([this.initialLat, this.initialLon], 13);
+    this.assistantmap = L.map('assistantmap').setView([this.initialLat, this.initialLon], 13);
 
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.mymap);
 
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.assistantmap);
+
     this.mymap.addLayer(this.markersLayer);
+    this.assistantmap.addLayer(this.markersLayer);
   }
 
 

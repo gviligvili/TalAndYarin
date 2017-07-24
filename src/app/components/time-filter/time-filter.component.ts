@@ -12,7 +12,7 @@ import {TargetService} from '../../services/targets-service/target.service';
 })
 export class TimeFilterComponent {
 
-  private rangeConfig: any = {
+  rangeConfig: any = {
     behaviour: 'drag',
     connect: true,
     margin: 1,
@@ -35,7 +35,7 @@ export class TimeFilterComponent {
   datePickerDate: any;
   isFilterByTimeOn: boolean;
 
-  private myDatePickerOptions: IMyDpOptions = {
+  myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
     showDecreaseDateBtn: true,
