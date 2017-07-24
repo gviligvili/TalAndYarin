@@ -19,6 +19,7 @@ export class AppComponent implements AfterViewInit {
   mymap;
   assistantmap;
   markersLayer = new L.FeatureGroup();
+  headingsLayer = new L.FeatureGroup();
 
   constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService) {
     setTimeout(() => {
@@ -41,6 +42,7 @@ export class AppComponent implements AfterViewInit {
 
     this.espMapService.registerMaps(this.mymap, this.assistantmap);
     this.espMapService.addLayer(this.markersLayer);
+    this.espMapService.addLayer(this.headingsLayer);
   }
 
 
@@ -58,13 +60,20 @@ export class AppComponent implements AfterViewInit {
   updateMarkers(targets: Target[]) {
     // This is a total recreation. Remove all previous markers first.
     this.markersLayer.clearLayers();
+    this.headingsLayer.clearLayers();
 
     // Create a marker for each target and add it to the markers layer.
     targets.forEach(
-      target => this.markersLayer.addLayer(
-                L.marker([target.lat, target.lon])
-                 .setIcon(L.icon({ iconUrl: this.getMarkerIcon(target.father_id) }))
-                 .on('click', () => this.markerClicked(target.father_id)))
+      target => {
+        this.markersLayer.addLayer(
+          L.marker([target.lat, target.lon])
+            .setIcon(L.icon({ iconUrl: this.getMarkerIcon(target.father_id) }))
+            .on('click', () => this.markerClicked(target.father_id)));
+
+        this.headingsLayer.addLayer(
+          L.polyline([])
+        )
+      }
     );
   }
 
