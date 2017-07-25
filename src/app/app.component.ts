@@ -3,25 +3,26 @@ import {TargetService} from './services/targets-service/target.service';
 import {Target} from './interfaces/target.interface';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
 import {ESPMapService} from './services/espmap-service/espmap.service';
+import {AmatService} from "./services/amats-service/amat.service";
+import {Amat} from "./interfaces/amat.interface";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [TargetService]
 })
 export class AppComponent implements AfterViewInit {
   initialLat = 32.073350;
   initialLon = 34.785941;
   filteredTargets: Target[];
+  amats: Amat[];
 
   clusterColorMap;
   mymap;
   assistantmap;
-  markersLayer = new L.FeatureGroup();
   headingsLayer = new L.FeatureGroup();
 
-  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService) {
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService, private amatService:AmatService) {
     setTimeout(() => {
       $('#startup-spinner').fadeOut(600, () => {
         $('#startup-spinner').remove();
@@ -33,15 +34,33 @@ export class AppComponent implements AfterViewInit {
       this.updateMarkers(this.filteredTargets);
     });
 
+    this.amatService.getAmats$().subscribe((amats) => {
+      amats.forEach((amat: Amat) => {
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_small),
+          color: amat.color
+        }).addTo(this.mymap);
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_big),
+          dashArray: "10, 5",
+          color: amat.color
+        }).addTo(this.mymap);
+      })
+    })
+
     this.clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
   }
 
   ngAfterViewInit(): void {
-    this.mymap = L.map('mapid').setView([this.initialLat, this.initialLon], 13);
-    this.assistantmap = L.map('assistantmap').setView([this.initialLat, this.initialLon], 13);
+    this.mymap = L.map('mapid', {
+      renderer: L.canvas()
+    }).setView([this.initialLat, this.initialLon], 13);
+    this.assistantmap = L.map('assistantmap', {
+      renderer: L.canvas()
+    }).setView([this.initialLat, this.initialLon], 13);
 
     this.espMapService.registerMaps(this.mymap, this.assistantmap);
-    this.espMapService.addLayer(this.markersLayer);
+    // this.espMapService.addLayer(this.markersLayer);
     this.espMapService.addLayer(this.headingsLayer);
   }
 
@@ -59,22 +78,53 @@ export class AppComponent implements AfterViewInit {
 
   updateMarkers(targets: Target[]) {
     // This is a total recreation. Remove all previous markers first.
-    this.markersLayer.clearLayers();
+    // this.markersLayer.clearLayers();
     this.headingsLayer.clearLayers();
 
     // Create a marker for each target and add it to the markers layer.
     targets.forEach(
       target => {
-        this.markersLayer.addLayer(
-          L.marker([target.lat, target.lon])
-            .setIcon(L.icon({ iconUrl: this.getMarkerIcon(target.father_id) }))
-            .on('click', () => this.markerClicked(target.father_id)));
 
-        this.headingsLayer.addLayer(
-          L.polyline([])
-        )
-      }
-    );
+        // If heading exists and it's a number.
+        if (target.heading && !Number.isNaN(Number(target.heading))) {
+          const distance = 0.010;
+          const heading = Number(target.heading);
+          const planeHeadingDegreeConst = 180;
+
+          const latlngs = [
+            {lat: target.lat, lng: target.lon},
+            {
+              lat: target.lat + distance * Math.cos(heading + planeHeadingDegreeConst),
+              lng: target.lon + distance * Math.sin(heading + planeHeadingDegreeConst)
+            },
+          ];
+
+
+          var polylineOptions = {
+            color: 'blue',
+            weight: 4,
+            opacity: 0.7
+          };
+
+          this.headingsLayer.addLayer(
+            L.polyline(latlngs, polylineOptions)
+          );
+        }
+      });
+
+    const self = this;
+
+    // setInterval(function() {
+    //   self.filteredTargets.forEach((tar) => {
+    //     tar.lat += 0.002;
+    //     tar.lon += 0.003;
+    //   });
+    // }, 2000);
+
+    // setTimeout(function() {
+    //   self.filteredTargets = [];
+    //   console.log("targets are gone.")
+    // }, 20000);
   }
 
   markerClicked(father_id: string) {

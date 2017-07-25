@@ -7,5 +7,9 @@ interface NodeModule {
 }
 
 declare namespace L.control {
-    export function polylineMeasure(options?: any): any;
+  export function polylineMeasure(options?: any): any;
+}
+
+declare namespace L {
+  export function featureGroup(layers?: Layer[], options?: any): FeatureGroup;
 }
