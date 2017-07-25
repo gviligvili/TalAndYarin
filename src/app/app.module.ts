@@ -19,6 +19,8 @@ import {NouisliderModule} from 'ng2-nouislider';
 import {MyDatePickerModule} from 'mydatepicker';
 import {ESPMarkerDirective} from "./components/map-components/espmarker/espmarker.directive";
 import {MarkerLayerManager} from "./services/marker-layer-manager-service/marker-layer-manager.service";
+import {TargetService} from "./services/targets-service/target.service";
+import {AmatService} from "./services/amats-service/amat.service";
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 
@@ -47,7 +49,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     MenuService,
     ESPMarkerService,
     ESPMapService,
-    MarkerLayerManager
+    MarkerLayerManager,
+    TargetService,
+    AmatService
   ],
   bootstrap: [AppComponent]
 })

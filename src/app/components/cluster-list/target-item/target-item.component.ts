@@ -15,7 +15,7 @@ export class TargetItemComponent {
 
   goToTarget(e) {
     this.stopClickPropogation(e);
-    // TODO
+    this.espMapService.flyToPoint(this.target.lat, this.target.lon);
   }
 
   stopClickPropogation(e) {

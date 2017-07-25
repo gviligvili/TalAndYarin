@@ -3,6 +3,8 @@ import Map = L.Map;
 import Layer = L.Layer;
 import * as cloneLayer from 'leaflet-clonelayer';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import LatLngExpression = L.LatLngExpression;
+import LatLngTuple = L.LatLngTuple;
 
 interface Point {
   lat: number; lon: number;
@@ -57,9 +59,21 @@ export class ESPMapService {
     const northWest = L.latLng(Math.max(...lats), Math.max(...lngs));
 
     // Padding to counter side and footer menus
-    this.map.flyToBounds(L.latLngBounds(southEast, northWest), { paddingBottomRight: [400, 60],
-                                                                 duration: 1,
+    this.map.flyToBounds(L.latLngBounds(southEast, northWest), { duration: 1,
                                                                  maxZoom: 12 });
+    this.assistantMap.flyToBounds(L.latLngBounds(southEast, northWest), { duration: 1,
+      maxZoom: 12 });
+  }
+
+  flyToPoint(lat,lng, zoom = 12, zoomPanOptions = {}) {
+    let zpOptions = {
+      duration: 1,
+      maxZoom: 12
+    };
+    let options = Object.assign(zpOptions, zoomPanOptions);
+
+    this.map.flyTo([lat, lng], zoom , options)
+    this.assistantMap.flyTo([lat, lng], zoom , options)
   }
 
   /**

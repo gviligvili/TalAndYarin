@@ -3,24 +3,26 @@ import {TargetService} from './services/targets-service/target.service';
 import {Target} from './interfaces/target.interface';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
 import {ESPMapService} from './services/espmap-service/espmap.service';
+import {AmatService} from "./services/amats-service/amat.service";
+import {Amat} from "./interfaces/amat.interface";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [TargetService]
 })
 export class AppComponent implements AfterViewInit {
   initialLat = 32.073350;
   initialLon = 34.785941;
   filteredTargets: Target[];
+  amats: Amat[];
 
   clusterColorMap;
   mymap;
   assistantmap;
   headingsLayer = new L.FeatureGroup();
 
-  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService) {
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService, private amatService:AmatService) {
     setTimeout(() => {
       $('#startup-spinner').fadeOut(600, () => {
         $('#startup-spinner').remove();
@@ -31,6 +33,20 @@ export class AppComponent implements AfterViewInit {
       this.filteredTargets = targets;
       this.updateMarkers(this.filteredTargets);
     });
+
+    this.amatService.getAmats$().subscribe((amats) => {
+      amats.forEach((amat: Amat) => {
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_small),
+          color: amat.color
+        }).addTo(this.mymap);
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_big),
+          dashArray: "10, 5",
+          color: amat.color
+        }).addTo(this.mymap);
+      })
+    })
 
     this.clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
   }
