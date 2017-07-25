@@ -9,7 +9,12 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        {
+          "glob": "**/*",
+          "input": "../node_modules/leaflet/dist/images",
+          "output": "./assets/"
+        }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -21,11 +26,17 @@
       "styles": [
         "styles.css",
         "../node_modules/semantic-ui-css/semantic.css",
-        "../node_modules/font-awesome/css/font-awesome.css"
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/leaflet/dist/leaflet.css",
+        "../node_modules/leaflet.polylinemeasure/Leaflet.PolylineMeasure.css",
+        "../node_modules/nouislider/distribute/nouislider.min.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/lodash/lodash.js"
+        "../node_modules/lodash/lodash.js",
+        "../node_modules/leaflet/dist/leaflet.js",
+        "../node_modules/leaflet.polylinemeasure/Leaflet.PolylineMeasure.js",
+        "../node_modules/leaflet-boundsawarelayergroup/dist/leaflet.boundsawarelayergroup.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -1,27 +1,42 @@
+$footer-height: 60px;
+
 :host {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
   background-color: white;
-  border-top: 2px solid #00b5ad;
   display:flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index:2;
+  z-index: 1;
+  user-select: none;
 }
 
 .footer-menu-actions-container {
+  border-top: 2px solid #00b5ad;
+  width: 100%;
+  height: $footer-height;
   display:flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
-  .footer-menu-item {
-    color: #00b5ad;
-    font-size: 30px;
-    margin-right: 17px;
-    margin-left: 17px;
+  .icons-container {
+    .footer-menu-item {
+      color: #00b5ad;
+      font-size: 30px;
+      margin-right: 17px;
+      margin-left: 17px;
+    }
+
+    .is-active {
+      color: rgb(255, 113, 132);
+    }
   }
+}
+
+#footer-drawer {
+  width: 100%;
+  height: 150px;
+  bottom: $footer-height;
+  background: white;
+  border-top: 2px solid #00b5ad;
 }

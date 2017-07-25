@@ -1,65 +1,71 @@
-import {Component, OnInit, AfterViewInit, ViewChild, OnDestroy} from '@angular/core';
+import {Component, AfterViewInit} from '@angular/core';
 import {TargetService} from './services/targets-service/target.service';
 import {Target} from './interfaces/target.interface';
-import {AgmMap} from '@agm/core';
 import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
-import {Observable} from 'rxjs/Observable';
-import {ESPMapService} from "./services/espmap-service/espmap.service";
+import {ESPMapService} from './services/espmap-service/espmap.service';
+import {AmatService} from "./services/amats-service/amat.service";
+import {Amat} from "./interfaces/amat.interface";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  providers: [TargetService]
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnDestroy, AfterViewInit {
-
-  @ViewChild(AgmMap) agmMap;
-
+export class AppComponent implements AfterViewInit {
   initialLat = 32.073350;
   initialLon = 34.785941;
   filteredTargets: Target[];
+  amats: Amat[];
 
   clusterColorMap;
-  filterTargetsSub;
+  mymap;
+  assistantmap;
+  headingsLayer = new L.FeatureGroup();
 
-  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService:ESPMapService) {
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService, private amatService:AmatService) {
     setTimeout(() => {
       $('#startup-spinner').fadeOut(600, () => {
         $('#startup-spinner').remove();
       });
     }, 600);
 
+    this.targetService.getFilteredTargets$().subscribe((targets) => {
+      this.filteredTargets = targets;
+      this.updateMarkers(this.filteredTargets);
+    });
+
+    this.amatService.getAmats$().subscribe((amats) => {
+      amats.forEach((amat: Amat) => {
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_small),
+          color: amat.color
+        }).addTo(this.mymap);
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_big),
+          dashArray: "10, 5",
+          color: amat.color
+        }).addTo(this.mymap);
+      })
+    })
+
     this.clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
-    this.filterTargetsSub = this.espMarkerService.getClutserColorMap$().asObservable()
-      .merge(this.espMarkerService.getShowUnchosenMarkers$().asObservable(), this.targetService.getTargets$().asObservable())
-      .subscribe(this.filterAllTargets.bind(this));
   }
 
   ngAfterViewInit(): void {
-    // Change background layer
-    this.agmMap.mapReady.subscribe(map => {
-      this.espMapService.registerMaps(map, this.agmMap);
-      const osmMapType = new google.maps.ImageMapType({
-        getTileUrl: function (coord, zoom) {
-          console.log(coord, zoom);
-          return 'http://tile.openstreetmap.org/' +
-            zoom + '/' + coord.x + '/' + coord.y + '.png';
-        },
-        tileSize: new google.maps.Size(256, 256),
-        isPng: true,
-        alt: 'OpenStreetMap',
-        name: 'OSM',
-        maxZoom: 19
-      });
+    this.mymap = L.map('mapid', {
+      renderer: L.canvas()
+    }).setView([this.initialLat, this.initialLon], 13);
+    this.assistantmap = L.map('assistantmap', {
+      renderer: L.canvas()
+    }).setView([this.initialLat, this.initialLon], 13);
 
-      map.mapTypes.set('OSM', osmMapType);
-      map.setMapTypeId('OSM');
-    });
+    this.espMapService.registerMaps(this.mymap, this.assistantmap);
+    // this.espMapService.addLayer(this.markersLayer);
+    this.espMapService.addLayer(this.headingsLayer);
   }
 
 
-  getMarkerIcon(father_id: string) {
+  getMarkerIcon(father_id: string): string {
     let path = 'assets/marker-icon-';
     if (this.clusterColorMap[father_id]) {
       path += this.clusterColorMap[father_id] + '.svg';
@@ -70,20 +76,55 @@ export class AppComponent implements OnDestroy, AfterViewInit {
     return path;
   }
 
+  updateMarkers(targets: Target[]) {
+    // This is a total recreation. Remove all previous markers first.
+    // this.markersLayer.clearLayers();
+    this.headingsLayer.clearLayers();
 
-  filterAllTargets() {
-    const allTargets = this.targetService.getTargets$().getValue();
-    const clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
-    const isShowUnchosenMarkers = this.espMarkerService.getShowUnchosenMarkers$().getValue();
+    // Create a marker for each target and add it to the markers layer.
+    targets.forEach(
+      target => {
 
-    // If show all, no filter needed.
-    if (isShowUnchosenMarkers) {
-      this.filteredTargets = allTargets;
-    } else {
-      this.filteredTargets = allTargets.filter((tar) => {
-        return clusterColorMap[tar.father_id] !== undefined;
+        // If heading exists and it's a number.
+        if (target.heading && !Number.isNaN(Number(target.heading))) {
+          const distance = 0.010;
+          const heading = Number(target.heading);
+          const planeHeadingDegreeConst = 180;
+
+          const latlngs = [
+            {lat: target.lat, lng: target.lon},
+            {
+              lat: target.lat + distance * Math.cos(heading + planeHeadingDegreeConst),
+              lng: target.lon + distance * Math.sin(heading + planeHeadingDegreeConst)
+            },
+          ];
+
+
+          var polylineOptions = {
+            color: 'blue',
+            weight: 4,
+            opacity: 0.7
+          };
+
+          this.headingsLayer.addLayer(
+            L.polyline(latlngs, polylineOptions)
+          );
+        }
       });
-    }
+
+    const self = this;
+
+    // setInterval(function() {
+    //   self.filteredTargets.forEach((tar) => {
+    //     tar.lat += 0.002;
+    //     tar.lon += 0.003;
+    //   });
+    // }, 2000);
+
+    // setTimeout(function() {
+    //   self.filteredTargets = [];
+    //   console.log("targets are gone.")
+    // }, 20000);
   }
 
   markerClicked(father_id: string) {
@@ -100,9 +141,5 @@ export class AppComponent implements OnDestroy, AfterViewInit {
 
   mapClicked($event: MouseEvent) {
     console.log('lat: ', $event['coords'].lat, 'lon:', $event['coords'].lng);
-  }
-
-  ngOnDestroy() {
-    this.filterTargetsSub.unsubscribe();
   }
 }

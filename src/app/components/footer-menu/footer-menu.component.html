@@ -1,4 +1,14 @@
+<div id="footer-drawer" [@FooterDrawerAnimation] *ngIf="showDrawer" [ngSwitch]="currMenuState">
+  <time-filter *ngSwitchCase="menuStateEnum.TIME_LINE"></time-filter>
+</div>
 <div class="footer-menu-actions-container">
-    <i class="footer-menu-item fa fa-dot-circle-o" (click)="changeMenuState(menuStateEnum.CLUSTER_LIST)" aria-hidden="true"></i>
-    <i class="footer-menu-item fa fa-bars" (click)="changeMenuState(menuStateEnum.ESP_FORM)" aria-hidden="true"></i>
+  <div class="icons-container">
+    <i class="footer-menu-item fa fa-clock-o" [ngClass]="{ 'is-active': currMenuState == menuStateEnum.TIME_LINE}"
+       (click)="changeMenuState(menuStateEnum.TIME_LINE)" aria-hidden="true"></i>
+    <i class="footer-menu-item fa fa-dot-circle-o"
+       [ngClass]="{ 'is-active': currMenuState == menuStateEnum.CLUSTER_LIST}"
+       (click)="changeMenuState(menuStateEnum.CLUSTER_LIST)" aria-hidden="true"></i>
+    <i class="footer-menu-item fa fa-bars" [ngClass]="{ 'is-active': currMenuState == menuStateEnum.ESP_FORM}"
+       (click)="changeMenuState(menuStateEnum.ESP_FORM)" aria-hidden="true"></i>
+  </div>
 </div>

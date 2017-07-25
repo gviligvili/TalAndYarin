@@ -1,0 +1,15 @@
+<div id="time-filter-container">
+  <div class="upper-row">
+    <div class="filter-by-time-container ui checkbox">
+      <input type="checkbox" [checked]="isFilterByTimeOn" (click)="stopCheckboxPropogation($event)" (change)="toggleFilterByTime($event)">
+      <label>סנן לפי זמן</label>
+    </div>
+    <div class="date-picker-container">
+      <my-date-picker [locale]="'he'" [options]="myDatePickerOptions"
+                      (dateChanged)="onDateChanged($event)" [(ngModel)]="datePickerDate"></my-date-picker>
+    </div>
+  </div>
+  <div class="time-filter-slider">
+    <nouislider (set)="sliderChanged($event)" [config]="rangeConfig" [(ngModel)]="currRange"></nouislider>
+  </div>
+</div>

@@ -1,25 +1,15 @@
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-<agm-map [latitude]="initialLat"
-         [longitude]="initialLon"
-         [disableDefaultUI]="false"
-         [zoomControl]="false"
-         (mapClick)="mapClicked($event)">
-
-  <agm-marker *ngFor="let target of filteredTargets"
-              [latitude]="target.lat"
-              [longitude]="target.lon"
-              [iconUrl]="getMarkerIcon(target.father_id)"
-              (markerClick)="markerClicked(target.father_id)"
-  >
-  </agm-marker>
-
-  <!--<ng-container *ngFor="let target of targets">-->
-  <!--<agm-marker *ngIf="target.id===5"-->
-              <!--[latitude]="target.lat"-->
-              <!--[longitude]="target.lng">-->
-  <!--</agm-marker>-->
-  <!--</ng-container>-->
-</agm-map>
-<side-menu></side-menu>
+<div class="maps-container">
+  <div id="mapid"></div>
+  <div class="map-separator"></div>
+  <div id="assistantmap"></div>
+  <div ESPMarker *ngFor="let target of filteredTargets"
+       [lat]="target.lat"
+       [lng]="target.lon"
+       [iconUrl]="getMarkerIcon(target.father_id)"
+       [iconSize]="[14, 14]">
+  </div>
+  <side-menu></side-menu>
+</div>
 <footer-menu></footer-menu>
