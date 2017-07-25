@@ -20,7 +20,8 @@ export class AppComponent implements AfterViewInit {
   clusterColorMap;
   mymap;
   assistantmap;
-  headingsLayer = new L.FeatureGroup();
+  mHeadingLayer = new L.FeatureGroup();
+  aHeadingLayer = new L.FeatureGroup();
 
   constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService, private amatService:AmatService) {
     setTimeout(() => {
@@ -45,6 +46,16 @@ export class AppComponent implements AfterViewInit {
           dashArray: "10, 5",
           color: amat.color
         }).addTo(this.mymap);
+
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_small),
+          color: amat.color
+        }).addTo(this.assistantmap);
+        L.circle([amat.lat, amat.lon], {
+          radius: Number(amat.radius_big),
+          dashArray: "10, 5",
+          color: amat.color
+        }).addTo(this.assistantmap);
       })
     })
 
@@ -61,7 +72,8 @@ export class AppComponent implements AfterViewInit {
 
     this.espMapService.registerMaps(this.mymap, this.assistantmap);
     // this.espMapService.addLayer(this.markersLayer);
-    this.espMapService.addLayer(this.headingsLayer);
+    this.mHeadingLayer.addTo(this.mymap);
+    this.aHeadingLayer.addTo(this.assistantmap);
   }
 
 
@@ -79,7 +91,8 @@ export class AppComponent implements AfterViewInit {
   updateMarkers(targets: Target[]) {
     // This is a total recreation. Remove all previous markers first.
     // this.markersLayer.clearLayers();
-    this.headingsLayer.clearLayers();
+    this.mHeadingLayer.clearLayers();
+    this.aHeadingLayer.clearLayers();
 
     // Create a marker for each target and add it to the markers layer.
     targets.forEach(
@@ -106,7 +119,11 @@ export class AppComponent implements AfterViewInit {
             opacity: 0.7
           };
 
-          this.headingsLayer.addLayer(
+          this.mHeadingLayer.addLayer(
+            L.polyline(latlngs, polylineOptions)
+          );
+
+          this.aHeadingLayer.addLayer(
             L.polyline(latlngs, polylineOptions)
           );
         }

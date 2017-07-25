@@ -44,6 +44,8 @@ export class ESPMapService {
   }
 
   addLayer(newLayer: Layer) {
+
+    // ITS BROKEN DONT USE IT !!!
     const cloned = cloneLayer(newLayer);
     const mLayer = this.map.addLayer(newLayer);
     const aLayer = this.assistantMap.addLayer(cloned);
