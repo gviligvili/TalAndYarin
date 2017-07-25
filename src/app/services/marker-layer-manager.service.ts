@@ -9,8 +9,12 @@ export class MarkerLayerManager {
 
   private _id = 0;
   private _markers = {};
-  mMarkerLayer = new L.FeatureGroup();
-  aMarkerLayer = new L.FeatureGroup();
+  mMarkerLayer =  L.featureGroup([], {
+    makeBoundsAware: true
+  });
+  aMarkerLayer =  L.featureGroup([], {
+    makeBoundsAware: true
+  });
 
   constructor(private espMapService: ESPMapService) {
     this.espMapService.getOnMapRegistered$().subscribe((maps) => {
