@@ -31,24 +31,21 @@ export class MarkerLayerManager {
     // Generate id for this marker
     marker._id = this._id.toString();
     this._id++;
+    const markerOnClick = (e) => marker.markerClick.emit({ event: e, marker: marker});
 
     // Create and add.
     const mlayerMarker = L.marker([marker.lat, marker.lng])
       .setIcon(this.createMarkerIcon(marker))
-      .on('click', () => marker.markerClick.emit());
+      .on('click', markerOnClick);
 
     // Create and add.
     const alayerMarker = L.marker([marker.lat, marker.lng])
-      .setIcon(L.icon({
-        iconUrl: marker.iconUrl,
-        iconSize: marker.iconSize,
-        iconAnchor: [marker.iconSize[0] / 2, marker.iconSize[1] / 2]
-      }))
-      .on('click', () => marker.markerClick.emit());
+      .setIcon(this.createMarkerIcon(marker))
+      .on('click', markerOnClick);
 
 
-    let mMarker = mlayerMarker.addTo(this.mMarkerLayer);
-    let aMarker = alayerMarker.addTo(this.aMarkerLayer);
+    const mMarker = mlayerMarker.addTo(this.mMarkerLayer);
+    const aMarker = alayerMarker.addTo(this.aMarkerLayer);
     this._markers[marker._id] = [mMarker, aMarker];
   }
 

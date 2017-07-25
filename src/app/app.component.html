@@ -8,7 +8,8 @@
        [lat]="target.lat"
        [lng]="target.lon"
        [iconUrl]="getMarkerIcon(target.father_id)"
-       [iconSize]="[14, 14]">
+       [iconSize]="[14, 14]"
+       (markerClick)="markerClicked(target.father_id)">
   </div>
   <side-menu></side-menu>
 </div>
