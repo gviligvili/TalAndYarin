@@ -2,7 +2,7 @@ import {
   AfterContentInit, Directive, EventEmitter, Input, OnChanges, OnDestroy,
   Output, SimpleChange
 } from '@angular/core';
-import {MarkerLayerManager} from "../../../services/marker-layer-manager.service";
+import {MarkerLayerManager} from "../../../services/marker-layer-manager-service/marker-layer-manager.service";
 
 @Directive({
   selector: '[ESPMarker]'

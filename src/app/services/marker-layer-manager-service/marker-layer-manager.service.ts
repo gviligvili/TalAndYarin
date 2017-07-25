@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {ESPMapService} from "./espmap-service/espmap.service";
-import {ESPMarker} from "../interfaces/ESPMarker.interface";
 import Map = L.Map;
 import Marker = L.Marker;
+import {ESPMapService} from "../espmap-service/espmap.service";
+import {ESPMarker} from "../../interfaces/ESPMarker.interface";
 
 @Injectable()
 export class MarkerLayerManager {

@@ -18,7 +18,7 @@ import {TimeFilterComponent} from './components/time-filter/time-filter.componen
 import {NouisliderModule} from 'ng2-nouislider';
 import {MyDatePickerModule} from 'mydatepicker';
 import {ESPMarkerDirective} from "./components/map-components/espmarker/espmarker.directive";
-import {MarkerLayerManager} from "./services/marker-layer-manager.service";
+import {MarkerLayerManager} from "./services/marker-layer-manager-service/marker-layer-manager.service";
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 
