@@ -68,25 +68,27 @@ export class ESPMarkerDirective implements OnChanges, OnDestroy{
       console.error('marker lat and lng must be numbers.')
       return;
     }
+
     if (!this._markerAddedToManger) {
       this._markerLayerManager.addMarker(this);
-      debugger;
-
       this._markerAddedToManger = true;
       return;
     }
-    // if (changes['lat'] || changes['lng']) {
-    //   this._markerLayerManager.updateMarkerPosition(this);
-    // }
+
+    if (changes['lat'] || changes['lng']) {
+      this._markerLayerManager.updateMarkerPosition(this);
+    }
+
     // if (changes['title']) {
     //   this._markerLayerManager.updateTitle(this);
     // }
     // if (changes['label']) {
     //   this._markerLayerManager.updateLabel(this);
     // }
-    // if (changes['iconUrl']) {
-    //   this._markerLayerManager.updateIcon(this);
-    // }
+
+    if (changes['iconUrl']) {
+      this._markerLayerManager.updateIcon(this);
+    }
     // if (changes['visible']) {
     //   this._markerLayerManager.updateVisible(this);
     // }

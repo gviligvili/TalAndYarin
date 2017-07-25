@@ -29,7 +29,12 @@ export class MarkerLayerManager {
     this._id++;
 
     // Create and add.
-    const layerMarker = L.marker([marker.lat, marker.lng])
+    const mlayerMarker = L.marker([marker.lat, marker.lng])
+      .setIcon(this.createMarkerIcon(marker))
+      .on('click', () => marker.markerClick.emit());
+
+    // Create and add.
+    const alayerMarker = L.marker([marker.lat, marker.lng])
       .setIcon(L.icon({
         iconUrl: marker.iconUrl,
         iconSize: marker.iconSize,
@@ -37,24 +42,27 @@ export class MarkerLayerManager {
       }))
       .on('click', () => marker.markerClick.emit());
 
-    this._markers[marker._id] = marker;
-    debugger;
-    layerMarker.addTo(this.mMarkerLayer);
-    layerMarker.addTo(this.mMarkerLayer);
+
+    let mMarker = mlayerMarker.addTo(this.mMarkerLayer);
+    let aMarker = alayerMarker.addTo(this.aMarkerLayer);
+    this._markers[marker._id] = [mMarker, aMarker];
   }
 
   deleteMarker(marker: ESPMarker) {
-    const m = this._markers[marker._id];
-    if (m != null) {
-      // this.aMarkerLayer.removeLayer();
-      // this.aMarkerLayer.remove(m);
+    const markers = this._markers[marker._id];
+    if (markers != null) {
+      this.mMarkerLayer.removeLayer(markers[0]._leaflet_id);
+      this.aMarkerLayer.removeLayer(markers[1]._leaflet_id);
     }
   }
 
-  // updateMarkerPosition(marker: ESPMarker): Promise<void> {
-  //   return this._markers.get(marker).then(
-  //     (m: Marker) => m.setPosition({lat: marker.latitude, lng: marker.longitude}));
-  // }
+  updateMarkerPosition(espMarker: ESPMarker) {
+    const markersArr = this.getNativeMarker(espMarker);
+    markersArr.forEach((m) => {
+      m.setLatLng([espMarker.lat,  espMarker.lng])
+    })
+  }
+
   //
   // updateTitle(marker: ESPMarker): Promise<void> {
   //   return this._markers.get(marker).then((m: Marker) => m.setTitle(marker.title));
@@ -68,9 +76,13 @@ export class MarkerLayerManager {
   //   return this._markers.get(marker).then((m: Marker) => m.setDraggable(marker.draggable));
   // }
   //
-  // updateIcon(marker: ESPMarker): Promise<void> {
-  //   return this._markers.get(marker).then((m: Marker) => m.setIcon(marker.iconUrl));
-  // }
+  updateIcon(espMarker: ESPMarker) {
+    const markersArr = this.getNativeMarker(espMarker);
+
+    markersArr.forEach((m) => {
+      m.setIcon(this.createMarkerIcon(espMarker))
+    })
+  }
   //
   // updateOpacity(marker: ESPMarker): Promise<void> {
   //   return this._markers.get(marker).then((m: Marker) => m.setOpacity(marker.opacity));
@@ -89,7 +101,15 @@ export class MarkerLayerManager {
   // }
 
 
-  getNativeMarker(marker: ESPMarker): Marker {
+  createMarkerIcon(marker: ESPMarker) {
+    return L.icon({
+      iconUrl: marker.iconUrl,
+      iconSize: marker.iconSize,
+      iconAnchor: [marker.iconSize[0] / 2, marker.iconSize[1] / 2]
+    })
+  }
+
+  getNativeMarker(marker: ESPMarker) {
     return this._markers[marker._id];
   }
 }

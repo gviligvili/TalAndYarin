@@ -36,8 +36,12 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.mymap = L.map('mapid').setView([this.initialLat, this.initialLon], 13);
-    this.assistantmap = L.map('assistantmap').setView([this.initialLat, this.initialLon], 13);
+    this.mymap = L.map('mapid', {
+      renderer: L.canvas()
+    }).setView([this.initialLat, this.initialLon], 13);
+    this.assistantmap = L.map('assistantmap', {
+      renderer: L.canvas()
+    }).setView([this.initialLat, this.initialLon], 13);
 
     this.espMapService.registerMaps(this.mymap, this.assistantmap);
     // this.espMapService.addLayer(this.markersLayer);
@@ -64,14 +68,6 @@ export class AppComponent implements AfterViewInit {
     // Create a marker for each target and add it to the markers layer.
     targets.forEach(
       target => {
-        // this.markersLayer.addLayer(
-          // L.marker([target.lat, target.lon])
-          //   .setIcon(L.icon({
-          //     iconUrl: this.getMarkerIcon(target.father_id),
-          //     iconSize: [14, 14],
-          //     iconAnchor: [7, 7]
-          //   }))
-          //   .on('click', () => this.markerClicked(target.father_id)));
 
         // If heading exists and it's a number.
         if (target.heading && !Number.isNaN(Number(target.heading))) {
@@ -87,16 +83,32 @@ export class AppComponent implements AfterViewInit {
             },
           ];
 
+
+          var polylineOptions = {
+            color: 'blue',
+            weight: 4,
+            opacity: 0.7
+          };
+
           this.headingsLayer.addLayer(
-            L.polyline(latlngs, 'red')
+            L.polyline(latlngs, polylineOptions)
           );
         }
       });
 
     const self = this;
-    setTimeout(function() {
-      self.filteredTargets = [];
-    }, 4000);
+
+    // setInterval(function() {
+    //   self.filteredTargets.forEach((tar) => {
+    //     tar.lat += 0.002;
+    //     tar.lon += 0.003;
+    //   });
+    // }, 2000);
+
+    // setTimeout(function() {
+    //   self.filteredTargets = [];
+    //   console.log("targets are gone.")
+    // }, 20000);
   }
 
   markerClicked(father_id: string) {
