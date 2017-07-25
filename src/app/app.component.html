@@ -4,6 +4,12 @@
   <div id="mapid"></div>
   <div class="map-separator"></div>
   <div id="assistantmap"></div>
+  <div ESPMarker *ngFor="let target of filteredTargets"
+       [lat]="target.lat"
+       [lng]="target.lon"
+       [iconUrl]="getMarkerIcon(target.father_id)"
+       [iconSize]="[14, 14]">
+  </div>
   <side-menu></side-menu>
 </div>
 <footer-menu></footer-menu>

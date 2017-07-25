@@ -18,7 +18,6 @@ export class AppComponent implements AfterViewInit {
   clusterColorMap;
   mymap;
   assistantmap;
-  markersLayer = new L.FeatureGroup();
   headingsLayer = new L.FeatureGroup();
 
   constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService) {
@@ -41,7 +40,7 @@ export class AppComponent implements AfterViewInit {
     this.assistantmap = L.map('assistantmap').setView([this.initialLat, this.initialLon], 13);
 
     this.espMapService.registerMaps(this.mymap, this.assistantmap);
-    this.espMapService.addLayer(this.markersLayer);
+    // this.espMapService.addLayer(this.markersLayer);
     this.espMapService.addLayer(this.headingsLayer);
   }
 
@@ -59,22 +58,45 @@ export class AppComponent implements AfterViewInit {
 
   updateMarkers(targets: Target[]) {
     // This is a total recreation. Remove all previous markers first.
-    this.markersLayer.clearLayers();
+    // this.markersLayer.clearLayers();
     this.headingsLayer.clearLayers();
 
     // Create a marker for each target and add it to the markers layer.
     targets.forEach(
       target => {
-        this.markersLayer.addLayer(
-          L.marker([target.lat, target.lon])
-            .setIcon(L.icon({ iconUrl: this.getMarkerIcon(target.father_id) }))
-            .on('click', () => this.markerClicked(target.father_id)));
+        // this.markersLayer.addLayer(
+          // L.marker([target.lat, target.lon])
+          //   .setIcon(L.icon({
+          //     iconUrl: this.getMarkerIcon(target.father_id),
+          //     iconSize: [14, 14],
+          //     iconAnchor: [7, 7]
+          //   }))
+          //   .on('click', () => this.markerClicked(target.father_id)));
 
-        this.headingsLayer.addLayer(
-          L.polyline([])
-        )
-      }
-    );
+        // If heading exists and it's a number.
+        if (target.heading && !Number.isNaN(Number(target.heading))) {
+          const distance = 0.010;
+          const heading = Number(target.heading);
+          const planeHeadingDegreeConst = 180;
+
+          const latlngs = [
+            {lat: target.lat, lng: target.lon},
+            {
+              lat: target.lat + distance * Math.cos(heading + planeHeadingDegreeConst),
+              lng: target.lon + distance * Math.sin(heading + planeHeadingDegreeConst)
+            },
+          ];
+
+          this.headingsLayer.addLayer(
+            L.polyline(latlngs, 'red')
+          );
+        }
+      });
+
+    const self = this;
+    setTimeout(function() {
+      self.filteredTargets = [];
+    }, 4000);
   }
 
   markerClicked(father_id: string) {

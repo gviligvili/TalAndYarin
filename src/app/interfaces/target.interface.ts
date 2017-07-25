@@ -5,4 +5,5 @@ export interface Target {
   ammo: string;
   point: string;
   tar_name: string;
+  heading: string;
 }

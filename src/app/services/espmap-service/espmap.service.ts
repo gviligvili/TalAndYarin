@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import Map = L.Map;
 import Layer = L.Layer;
 import * as cloneLayer from 'leaflet-clonelayer';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 interface Point {
   lat: number; lon: number;
@@ -12,12 +13,17 @@ export class ESPMapService {
 
   private map: Map;
   private assistantMap: Map;
-  private markerLayer;
+  private onMapRegistered$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   registerMaps(mainMap: Map, assistantMap: Map) {
     this.map = mainMap;
     this.assistantMap = assistantMap;
     this.mapsInit(this.map, this.assistantMap);
+    this.onMapRegistered$.next({ mainMap: mainMap, assistantMap: assistantMap});
+  }
+
+  getOnMapRegistered$(): BehaviorSubject<any> {
+    return this.onMapRegistered$;
   }
 
   /**

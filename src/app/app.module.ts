@@ -17,6 +17,8 @@ import { ESPMapService} from './services/espmap-service/espmap.service';
 import {TimeFilterComponent} from './components/time-filter/time-filter.component';
 import {NouisliderModule} from 'ng2-nouislider';
 import {MyDatePickerModule} from 'mydatepicker';
+import {ESPMarkerDirective} from "./components/map-components/espmarker/espmarker.directive";
+import {MarkerLayerManager} from "./services/marker-layer-manager.service";
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 
@@ -30,6 +32,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     ClusterItemComponent,
     TargetItemComponent,
     TimeFilterComponent,
+    ESPMarkerDirective
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
   providers: [
     MenuService,
     ESPMarkerService,
-    ESPMapService
+    ESPMapService,
+    MarkerLayerManager
   ],
   bootstrap: [AppComponent]
 })
