@@ -5,6 +5,7 @@ import {ESPMarkerService} from './services/espmarker-service/espmarker.service';
 import {ESPMapService} from './services/espmap-service/espmap.service';
 import {AmatService} from "./services/amats-service/amat.service";
 import {Amat} from "./interfaces/amat.interface";
+import Consts from "./consts";
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,10 @@ export class AppComponent implements AfterViewInit {
   clusterColorMap;
   mymap;
   assistantmap;
-  headingsLayer = new L.FeatureGroup();
+  mHeadingLayer = new L.FeatureGroup();
+  aHeadingLayer = new L.FeatureGroup();
 
-  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService, private amatService:AmatService) {
+  constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService, private espMapService: ESPMapService, private amatService: AmatService) {
     setTimeout(() => {
       $('#startup-spinner').fadeOut(600, () => {
         $('#startup-spinner').remove();
@@ -35,18 +37,28 @@ export class AppComponent implements AfterViewInit {
     });
 
     this.amatService.getAmats$().subscribe((amats) => {
+
       amats.forEach((amat: Amat) => {
-        L.circle([amat.lat, amat.lon], {
-          radius: Number(amat.radius_small),
-          color: amat.color
-        }).addTo(this.mymap);
-        L.circle([amat.lat, amat.lon], {
+
+        const bigRadiusOptions = {
           radius: Number(amat.radius_big),
           dashArray: "10, 5",
-          color: amat.color
-        }).addTo(this.mymap);
-      })
-    })
+          color: amat.color,
+          fill: false,
+        };
+
+        const smallRadiusOptions = {
+          radius: Number(amat.radius_small),
+          color: amat.color,
+          fill: false
+        };
+
+        L.circle([amat.lat, amat.lon], smallRadiusOptions).addTo(this.mymap);
+        L.circle([amat.lat, amat.lon], bigRadiusOptions).addTo(this.mymap);
+        L.circle([amat.lat, amat.lon], smallRadiusOptions).addTo(this.assistantmap);
+        L.circle([amat.lat, amat.lon], bigRadiusOptions).addTo(this.assistantmap);
+      });
+    });
 
     this.clusterColorMap = this.espMarkerService.getClutserColorMap$().getValue();
   }
@@ -54,14 +66,15 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.mymap = L.map('mapid', {
       renderer: L.canvas()
-    }).setView([this.initialLat, this.initialLon], 13);
+    }).setView([this.initialLat, this.initialLon], Consts.MAIN_MAP_ZOON);
     this.assistantmap = L.map('assistantmap', {
-      renderer: L.canvas()
-    }).setView([this.initialLat, this.initialLon], 13);
+      renderer: L.canvas(),
+    }).setView([this.initialLat, this.initialLon], Consts.ASSIST_MAP_ZOON);
 
     this.espMapService.registerMaps(this.mymap, this.assistantmap);
     // this.espMapService.addLayer(this.markersLayer);
-    this.espMapService.addLayer(this.headingsLayer);
+    this.mHeadingLayer.addTo(this.mymap);
+    this.aHeadingLayer.addTo(this.assistantmap);
   }
 
 
@@ -79,7 +92,8 @@ export class AppComponent implements AfterViewInit {
   updateMarkers(targets: Target[]) {
     // This is a total recreation. Remove all previous markers first.
     // this.markersLayer.clearLayers();
-    this.headingsLayer.clearLayers();
+    this.mHeadingLayer.clearLayers();
+    this.aHeadingLayer.clearLayers();
 
     // Create a marker for each target and add it to the markers layer.
     targets.forEach(
@@ -87,26 +101,33 @@ export class AppComponent implements AfterViewInit {
 
         // If heading exists and it's a number.
         if (target.heading && !Number.isNaN(Number(target.heading))) {
-          const distance = 0.010;
+          const distance = 0.2;
           const heading = Number(target.heading);
-          const planeHeadingDegreeConst = 180;
+          const azimuthStartDegree = 90;
+
+          // Converting heading to azimuth.
+          const alpha = azimuthStartDegree - (heading + 180);
 
           const latlngs = [
             {lat: target.lat, lng: target.lon},
             {
-              lat: target.lat + distance * Math.cos(heading + planeHeadingDegreeConst),
-              lng: target.lon + distance * Math.sin(heading + planeHeadingDegreeConst)
+              lat: target.lat + distance * Math.sin(alpha * Math.PI / 180),
+              lng: target.lon + distance * Math.cos(alpha * Math.PI / 180)
             },
           ];
 
 
-          var polylineOptions = {
+          const polylineOptions = {
             color: 'blue',
             weight: 4,
             opacity: 0.7
           };
 
-          this.headingsLayer.addLayer(
+          this.mHeadingLayer.addLayer(
+            L.polyline(latlngs, polylineOptions)
+          );
+
+          this.aHeadingLayer.addLayer(
             L.polyline(latlngs, polylineOptions)
           );
         }
@@ -140,6 +161,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   mapClicked($event: MouseEvent) {
-    console.log('lat: ', $event['coords'].lat, 'lon:', $event['coords'].lng);
+    // console.log('lat: ', $event['coords'].lat, 'lon:', $event['coords'].lng);
   }
 }

@@ -7,7 +7,7 @@
       {{ cluster.ammo }}
     </div>
     <div class="cluster-name">
-      <span class="name-text">{{ cluster.name }}</span>
+      <span class="name-text">{{ cluster.name }} - ({{cluster.targets.length}})</span>
       <div class="ui checkbox">
         <input type="checkbox" [checked]="!!this.chosenClusters[cluster.name]" (click)="stopClickPropogation($event)"(change)="checkBoxToggle($event)">
         <label></label>

@@ -5,6 +5,7 @@ import * as cloneLayer from 'leaflet-clonelayer';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import LatLngExpression = L.LatLngExpression;
 import LatLngTuple = L.LatLngTuple;
+import Consts from '../../consts';
 
 interface Point {
   lat: number; lon: number;
@@ -44,6 +45,8 @@ export class ESPMapService {
   }
 
   addLayer(newLayer: Layer) {
+
+    // ITS BROKEN DONT USE IT !!!
     const cloned = cloneLayer(newLayer);
     const mLayer = this.map.addLayer(newLayer);
     const aLayer = this.assistantMap.addLayer(cloned);
@@ -60,20 +63,19 @@ export class ESPMapService {
 
     // Padding to counter side and footer menus
     this.map.flyToBounds(L.latLngBounds(southEast, northWest), { duration: 1,
-                                                                 maxZoom: 12 });
+                                                                 maxZoom: Consts.MAIN_MAP_ZOON });
     this.assistantMap.flyToBounds(L.latLngBounds(southEast, northWest), { duration: 1,
-      maxZoom: 12 });
+      maxZoom: Consts.ASSIST_MAP_ZOON });
   }
 
-  flyToPoint(lat,lng, zoom = 12, zoomPanOptions = {}) {
-    let zpOptions = {
+  flyToPoint(lat, lng, zoom = Consts.MAIN_MAP_ZOON, zoomPanOptions = {}) {
+    const zpOptions = {
       duration: 1,
-      maxZoom: 12
+      maxZoom: Consts.MAIN_MAP_ZOON
     };
-    let options = Object.assign(zpOptions, zoomPanOptions);
+    const options = Object.assign(zpOptions, zoomPanOptions);
 
-    this.map.flyTo([lat, lng], zoom , options)
-    this.assistantMap.flyTo([lat, lng], zoom , options)
+    this.map.flyTo([lat, lng], zoom , options);
   }
 
   /**

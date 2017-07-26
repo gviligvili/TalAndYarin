@@ -15,7 +15,7 @@
     }
 
     .cluster-name {
-      flex: 1;
+      flex: 3;
       width: 100%;
       font-size: 24px;
       color: #46b7e4;
@@ -24,6 +24,7 @@
       justify-content: flex-end;
 
       .name-text {
+        direction: rtl;
         margin-right: 8px;
       }
 

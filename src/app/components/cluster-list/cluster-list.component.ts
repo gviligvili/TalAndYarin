@@ -1,8 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, ViewChild, ElementRef, QueryList, ContentChildren,
+  ViewChildren
+} from '@angular/core';
 import {Cluster} from '../../interfaces/cluster.interface';
 import {TargetService} from '../../services/targets-service/target.service';
 import {ESPMarkerService} from '../../services/espmarker-service/espmarker.service';
 import {ESPMapService} from '../../services/espmap-service/espmap.service';
+import {PerfectScrollbarComponent} from "angular2-perfect-scrollbar";
+import {ClusterItemComponent} from "./cluster-item/cluster-item.component";
 
 @Component({
   selector: 'cluster-list',
@@ -11,12 +16,14 @@ import {ESPMapService} from '../../services/espmap-service/espmap.service';
 })
 export class ClusterListComponent implements OnInit, OnDestroy {
 
+  @ViewChild(PerfectScrollbarComponent) scrollbar: PerfectScrollbarComponent;
+
   clusters: Cluster[];
   showUnchosenMarkers: boolean;
   bindedKeydownEventHandler = this.keydownEventHandler.bind(this);
 
   constructor(private targetService: TargetService, private espMarkerService: ESPMarkerService,
-              private espMapService: ESPMapService) {
+              private espMapService: ESPMapService, private elementRef: ElementRef) {
     this.espMarkerService.getShowUnchosenMarkers$().subscribe((flag) => {
       this.showUnchosenMarkers = flag;
     });
@@ -70,6 +77,7 @@ export class ClusterListComponent implements OnInit, OnDestroy {
 
         // Also fly to new cluster
         this.espMapService.flyToCluster(this.clusters[0].targets);
+        this.scrollbar.scrollTo(0);
       }
     } else {
       const currentClusterName = chosenClustersNames[0];
@@ -82,6 +90,9 @@ export class ClusterListComponent implements OnInit, OnDestroy {
 
       // Also fly to new cluster
       this.espMapService.flyToCluster(this.clusters[nextClusterIndex].targets);
+      const newTop = this.elementRef.nativeElement.querySelectorAll('cluster-item')[nextClusterIndex].offsetTop;
+      // Scrolling to that element with a little buffer abouve.
+      this.scrollbar.scrollTo(newTop - 100);
     }
   }
 
@@ -98,6 +109,7 @@ export class ClusterListComponent implements OnInit, OnDestroy {
 
         // Also fly to new cluster
         this.espMapService.flyToCluster(this.clusters[0].targets);
+        this.scrollbar.scrollTo(0);
       }
     } else {
       const currentClusterName = chosenClustersNames[0];
@@ -110,6 +122,9 @@ export class ClusterListComponent implements OnInit, OnDestroy {
 
       // Also fly to new cluster
       this.espMapService.flyToCluster(this.clusters[nextClusterIndex].targets);
+      const newTop = this.elementRef.nativeElement.querySelectorAll('cluster-item')[nextClusterIndex].offsetTop;
+      // Scrolling to that element with a little buffer abouve.
+      this.scrollbar.scrollTo(newTop - 100);
     }
   }
 }
